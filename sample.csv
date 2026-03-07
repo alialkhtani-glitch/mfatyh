@@ -1,0 +1,6 @@
+tracking_number,ship_date,delivery_date,carrier,cost,status,order_id
+3138291290,2026-02-15,2026-02-18,Aramex,25.00,Delivered,101
+8729192110,2026-02-16,2026-02-22,SMSA,28.50,Delivered,102
+4421092122,2026-02-17,,SPL,30.00,In Transit,103
+TRK9281001,2026-02-18,2026-02-20,Aramex,25.00,Delivered,104
+TRK5521092,2026-02-19,,SMSA,28.50,Stuck,105
