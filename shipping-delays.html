@@ -1,102 +1,131 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مفاتيح | تحليل تأخيرات الشحن و SLA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
 
+        /* الخط السعودي - النسخة العادية */
+        @font-face {
+            font-family: 'Saudi';
+            src: url('fonts/saudi/SaudiWeb-Regular.woff2') format('woff2'),
+                 url('fonts/saudi/SaudiWeb-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        /* الخط السعودي - النسخة العريضة */
+        @font-face {
+            font-family: 'Saudi';
+            src: url('fonts/saudi/SaudiWeb-Bold.woff2') format('woff2'),
+                 url('fonts/saudi/SaudiWeb-Bold.woff') format('woff');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
 
+        body { 
+            font-family: 'IBM Plex Sans Arabic', sans-serif; 
+            background-color: #F8FAFC; 
+            color: #1E293B; 
+            scroll-behavior: smooth; 
+        }
+        
+        .font-brand { font-family: 'Saudi', sans-serif; }
+        .font-ui { font-family: 'IBM Plex Sans Arabic', sans-serif; }
+        .text-signal { color: #0EA5E9; }
+        
+        .hero-gradient { 
+            background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%); 
+        }
 
-<title>لماذا تتأخر شحنات المتاجر الإلكترونية</title>
+        .animate-sovereign {
+            animation: fadeInSlide 0.8s ease-out forwards;
+        }
 
-
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
-
-
-<style>
-
-
-body{
-font-family:'IBM Plex Sans Arabic',sans-serif;
-max-width:850px;
-margin:auto;
-padding:40px 20px;
-line-height:1.8;
-color:#1d2939;
-}
-
-
-h1{
-font-size:34px;
-margin-bottom:20px;
-}
-
-
-h2{
-margin-top:30px;
-}
-
-
-a.button{
-background:#2563eb;
-color:white;
-padding:14px 28px;
-border-radius:8px;
-text-decoration:none;
-display:inline-block;
-margin-top:30px;
-}
-
-
-</style>
-
-
+        @keyframes fadeInSlide {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
+<body class="antialiased text-right">
 
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 h-20 flex items-center px-6 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto w-full flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <span class="text-xl font-brand font-bold text-[#0F172A]">مفاتيح</span>
+            </div>
+            <nav class="font-ui">
+                <a href="articles.html" class="text-signal font-bold text-sm hover:underline">
+                    <i class="fas fa-arrow-right ml-2"></i> العودة للمقالات
+                </a>
+            </nav>
+        </div>
+    </header>
 
-<body>
+    <main class="py-24 max-w-4xl mx-auto px-6">
+        <article class="space-y-12 animate-sovereign">
+            <!-- Title Section -->
+            <header class="space-y-6">
+                <div class="inline-block px-4 py-1 rounded-full bg-blue-50 text-signal text-xs font-bold uppercase tracking-widest">
+                    SLA Analysis
+                </div>
+                <h1 class="text-4xl md:text-6xl font-brand font-black text-[#0F172A] leading-tight">
+                    أثر تأخيرات الشحن على الربحية (SLA)
+                </h1>
+                <p class="text-xl text-slate-600 leading-relaxed font-ui">
+                    تساعد مفاتيح على تحليل بيانات الشحن واستخراج مؤشرات التأخير الفعلي ومقارنتها بالأداء المتوقع لاسترداد التعويضات المستحقة للتاجر.
+                </p>
+            </header>
 
+            <!-- Insight Box -->
+            <div class="p-10 bg-rose-50 border-r-4 border-rose-500 rounded-2xl my-10">
+                <h4 class="font-bold text-rose-900 mb-2 font-brand text-lg">حقيقة تشغيلية:</h4>
+                <p class="text-sm text-rose-800 leading-relaxed font-ui">
+                    أكثر من 15% من الشحنات في أوقات الذروة تتجاوز اتفاقية مستوى الخدمة (SLA) دون أن يتم تعويض التاجر آلياً عن هذا التأخير، مما يسبب نزيفاً في صافي الأرباح.
+                </p>
+            </div>
 
-<h1>لماذا تتأخر شحنات المتاجر الإلكترونية؟</h1>
+            <!-- Content Body -->
+            <div class="space-y-8 font-ui text-lg text-slate-700 leading-relaxed">
+                <h2 class="text-2xl font-brand font-bold text-[#0F172A]">كيف نكشف التأخير من البيانات؟</h2>
+                <p>
+                    عبر مطابقة تاريخ "الالتقاط الفعلي" مع تاريخ "التسليم النهائي" واستبعاد أيام الإجازات الرسمية، نحدد بدقة الشحنات التي يحق للمتجر المطالبة بتعويض عنها بناءً على الأدلة الرقمية.
+                </p>
+                <p>
+                    التحدي الأكبر يكمن في "الحالات الرمادية"، حيث يتم تسجيل الشحنة كـ "تم التسليم" في نظام الناقل بينما لم تصل للعميل فعلياً إلا بعد يومين؛ محرك مفاتيح يتقاطع مع بيانات التتبع الحية لكشف هذه الفجوات.
+                </p>
+            </div>
 
+            <!-- Connection to Product (Abu Fahad's Tip) -->
+            <div class="pt-10 border-t border-slate-100 italic text-slate-500 text-sm font-ui">
+                تعمل مفاتيح كطبقة تحليل بيانات مستقلة فوق أنظمة الشحن لاستخراج المؤشرات التشغيلية واستعادة الفروقات المالية.
+            </div>
 
-<p>
-تأخر الشحن من أكثر المشكلات التي تؤثر على تجربة العميل في التجارة الإلكترونية.  
-لكن خلف هذا التأخير قد توجد أسباب تشغيلية أو تنظيمية تحتاج إلى تحليل بيانات الشحن لفهمها.
-</p>
+            <!-- CTA Section -->
+            <div class="bg-slate-900 p-12 rounded-[3.5rem] text-center text-white mt-20 shadow-2xl relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
+                <h3 class="text-2xl font-brand font-bold mb-6">استخرج تقرير التأخيرات لمتجرك الآن</h3>
+                <a href="index.html#upload" class="bg-signal px-10 py-4 rounded-2xl font-brand font-bold text-lg inline-block hover:scale-105 transition-all text-white shadow-lg">
+                    ابدأ المراجعة الآن
+                </a>
+            </div>
+        </article>
+    </main>
 
-
-<h2>أسباب شائعة للتأخير</h2>
-
-
-<p>
-ازدحام الشحنات في مواسم العروض،  
-مشكلات الفرز أو التوزيع،  
-أو نقص المعلومات التشغيلية للشحنة.
-</p>
-
-
-<h2>لماذا لا يلاحظ المتجر المشكلة سريعاً؟</h2>
-
-
-<p>
-لأن معظم المتاجر تتابع الشحنات بشكل فردي وليس عبر تحليل شامل للبيانات.  
-عند وجود مئات أو آلاف الشحنات يصبح من الصعب اكتشاف الأنماط المتكررة.
-</p>
-
-
-<h2>الحل</h2>
-
-
-<p>
-جمع بيانات الشحن في ملف واحد وتحليلها يساعد في اكتشاف الحالات التي تستحق المراجعة.
-</p>
-
-
-<a href="https://tally.so/r/VLIzYa" class="button">
-ارفع ملف الشحن للتحليل
-</a>
-
+    <!-- Footer -->
+    <footer class="py-12 bg-white border-t border-slate-200 text-center text-[10px] text-slate-500 font-bold uppercase tracking-widest font-ui">
+        <p>© 2026 Mfatyh Intelligence — Powered by Five Al Durub — KSA Technology</p>
+    </footer>
 
 </body>
 </html>
+
+
