@@ -1,268 +1,585 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مفاتيح | تدقيق وتحليل تباينات فواتير الشحن</title>
-    <!-- IBM Plex Sans Arabic Font -->
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #101828;      /* Navy Blue */
-            --secondary: #2563eb;    /* Tech Blue */
-            --accent: #f8fafc;       /* Background Light */
-            --border: #eaecf0;       /* Borders */
-            --text-main: #1d2939;    /* Main Text */
-            --text-muted: #667085;   /* Secondary Text */
-            --success: #10b981;      /* Emerald */
-            --danger: #e11d48;       /* Rose */
-            --white: #ffffff;
-        }
+import React, { useState, useEffect } from 'react';
+import { 
+  BarChart3, 
+  UploadCloud, 
+  Database, 
+  Layers, 
+  Globe, 
+  Target, 
+  LayoutDashboard, 
+  Cpu, 
+  Settings, 
+  LineChart, 
+  Search, 
+  ArrowDown, 
+  Zap, 
+  PieChart,
+  CheckCircle2,
+  MessageSquare,
+  ShieldCheck,
+  TrendingUp,
+  Award,
+  Calendar,
+  Building2,
+  CheckCircle,
+  FileSearch,
+  FileText,
+  Lock,
+  Trash2,
+  Users
+} from 'lucide-react';
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'IBM Plex Sans Arabic', sans-serif; background-color: var(--white); color: var(--text-main); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-        h1, h2, h3 { color: var(--primary); font-weight: 700; }
-        a { text-decoration: none; transition: 0.3s ease; }
+/**
+ * App: Mfatyh Intelligence (v40.0)
+ * Status: Final Production Launch - Phase 1: Data Acquisition Layer
+ * Highlights: Social Proof, Case Study, Security Shield, Data Sample
+ */
 
-        /* Navigation */
-        nav { padding: 20px 0; border-bottom: 1px solid var(--border); background: var(--white); position: sticky; top: 0; z-index: 1000; }
-        .nav-inner { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 24px; font-weight: 700; color: var(--primary); letter-spacing: -0.5px; }
-        .nav-links { display: flex; gap: 20px; align-items: center; }
-        .nav-links a { font-size: 15px; font-weight: 600; color: var(--primary); }
+const App = () => {
+  const [currentPage, setCurrentPage] = useState('home');
 
-        /* Hero Section */
-        .hero { padding: 100px 0 80px; text-align: center; background: radial-gradient(circle at top right, #f8faff, #ffffff); }
-        h1 { font-size: 42px; margin-bottom: 24px; line-height: 1.3; }
-        .hero-description { font-size: 20px; color: var(--text-muted); max-width: 800px; margin: 0 auto 40px; }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
 
-        /* Buttons */
-        .btn { display: inline-block; background-color: var(--secondary); color: var(--white); padding: 16px 40px; border-radius: 10px; font-weight: 600; font-size: 18px; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2); border: none; cursor: pointer; }
-        .btn:hover { background-color: #1d4ed8; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3); }
-        .btn-sm { padding: 10px 20px; font-size: 15px; }
+  const navigate = (page) => setCurrentPage(page);
 
-        .trust-line { margin-top: 30px; font-size: 14px; color: var(--text-muted); }
-        .sample-box { background: #eff6ff; border: 1px dashed #bfdbfe; padding: 15px 25px; border-radius: 8px; display: inline-block; margin-top: 25px; font-size: 14px; color: #1e40af; }
-        .sample-box a { color: var(--secondary); font-weight: 600; text-decoration: underline; margin: 0 5px; }
+  const goToSection = (page, id) => {
+    setCurrentPage(page);
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  };
 
-        /* Generic Section Styles */
-        section { padding: 90px 0; }
-        .section-title { text-align: center; font-size: 28px; margin-bottom: 50px; color: var(--primary); }
+  // --- الهوية البصرية المركزية (Global Styles) ---
+  const GlobalStyles = () => (
+    <style dangerouslySetInnerHTML={{ __html: `
+      @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
 
-        /* Grid Layouts */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-        .card { padding: 40px; background: var(--accent); border: 1px solid var(--border); border-radius: 20px; }
-        .card h3 { font-size: 20px; margin-bottom: 15px; color: var(--primary); }
-        .card p { color: var(--text-muted); font-size: 15px; }
+      @font-face {
+        font-family: 'Saudi';
+        src: url('fonts/saudi/SaudiWeb-Regular.woff2') format('woff2'),
+             url('fonts/saudi/SaudiWeb-Regular.woff') format('woff');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
 
-        /* Indicators Styles */
-        .indicators-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-        .indicator-card { padding: 30px; border: 1px solid var(--border); border-radius: 16px; background: var(--white); }
-        .indicator-card h4 { font-size: 17px; margin-bottom: 12px; color: var(--primary); display: flex; align-items: center; gap: 8px; }
-        .indicator-card h4::before { content: "•"; color: var(--secondary); font-size: 24px; }
+      @font-face {
+        font-family: 'Saudi';
+        src: url('fonts/saudi/SaudiWeb-Bold.woff2') format('woff2'),
+             url('fonts/saudi/SaudiWeb-Bold.woff') format('woff');
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
 
-        /* Report Preview Section */
-        .report-section { background-color: var(--accent); }
-        .report-preview { max-width: 700px; margin: 0 auto; background: var(--white); border: 1px solid var(--border); border-radius: 24px; padding: 45px; box-shadow: 0 15px 40px rgba(0,0,0,0.04); text-align: right; }
-        .report-header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 30px; }
-        .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-        .stat-item { padding: 20px; background: var(--accent); border-radius: 12px; }
-        .stat-label { font-size: 13px; color: var(--text-muted); margin-bottom: 5px; }
-        .stat-val { font-size: 22px; font-weight: 700; color: var(--secondary); }
+      body {
+        font-family: 'IBM Plex Sans Arabic', sans-serif;
+        background-color: #F8FAFC;
+        color: #1E293B;
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+      }
 
-        /* FAQ Section */
-        .faq-item { padding: 25px; background: var(--accent); border-radius: 12px; margin-bottom: 15px; }
-        .faq-item h4 { margin-bottom: 10px; color: var(--primary); font-size: 18px; }
+      .font-brand { font-family: 'Saudi', 'IBM Plex Sans Arabic', sans-serif; }
+      .font-ui { font-family: 'IBM Plex Sans Arabic', sans-serif; }
+      .hero-gradient { background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%); }
+      .glass-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(226, 232, 240, 0.5); }
+      .badge-pro { background: rgba(14, 165, 233, 0.1); border: 1px solid rgba(14, 165, 233, 0.2); color: #0EA5E9; }
+      .text-signal { color: #0EA5E9; }
+      .bg-signal { background-color: #0EA5E9; }
+      .border-signal { border-color: #0EA5E9; }
+      .btn-primary { background-color: #0EA5E9; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+      .btn-primary:hover { background-color: #0284c7; transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.4); }
+      .animate-sovereign { animation: fadeInSlide 0.8s ease-out forwards; }
+      @keyframes fadeInSlide { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    `}} />
+  );
 
-        /* About Section */
-        .about-box { max-width: 850px; margin: 0 auto; text-align: center; padding: 40px; background: var(--accent); border-radius: 24px; }
-        .about-box p { font-size: 17px; color: var(--text-main); margin-bottom: 20px; }
+  // --- UI Components ---
 
-        /* Footer */
-        footer { padding: 60px 0; border-top: 1px solid var(--border); background: var(--white); text-align: center; }
-        .footer-links { display: flex; justify-content: center; gap: 30px; margin-top: 25px; margin-bottom: 25px; }
-        .footer-links a { color: var(--secondary); font-weight: 600; font-size: 15px; }
-        .copyright { font-size: 13px; color: var(--text-muted); margin-top: 20px; }
+  const MfatyhLogo = ({ size = 40, color = "#0F172A" }) => (
+    <svg width={size} height={size} viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="90" cy="100" r="80" stroke={color} strokeWidth="20" />
+      <rect x="65" y="110" width="12" height="30" rx="2" fill="#0EA5E9" />
+      <rect x="84" y="90" width="12" height="50" rx="2" fill="#0EA5E9" />
+      <rect x="103" y="70" width="12" height="70" rx="2" fill="#38BDF8" />
+      <path d="M170 100H230M210 100V135M230 100V125" stroke={color} strokeWidth="18" strokeLinecap="round" />
+    </svg>
+  );
 
-        /* Floating WhatsApp */
-        .whatsapp-float { position: fixed; bottom: 30px; left: 30px; background-color: #25d366; color: #fff; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: 700; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1000; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
-        .whatsapp-float:hover { transform: scale(1.05); background-color: #1ebe57; }
-
-        /* Responsive */
-        @media (max-width: 768px) { h1 { font-size: 32px; } .hero { padding: 60px 0; } .nav-inner { flex-direction: column; gap: 15px; } .stat-grid { grid-template-columns: 1fr; } .grid { grid-template-columns: 1fr; } .indicators-grid { grid-template-columns: 1fr; } .about-box { padding: 25px; } .footer-links { flex-direction: column; gap: 15px; } }
-    </style>
-</head>
-<body>
-
-    <nav>
-        <div class="container nav-inner">
-            <div class="logo">مفاتيح</div>
-            <div class="nav-links">
-                <a href="articles.html">المدونة</a>
-                <a href="https://tally.so/r/VLlzYa" target="_blank" class="btn btn-sm">ابدأ التدقيق</a>
-            </div>
+  const Header = () => (
+    <header className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-[#E2E8F0]">
+      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <div className="flex items-center gap-4 cursor-pointer" onClick={() => navigate('home')}>
+          <MfatyhLogo size={40} />
+          <div className="flex flex-col">
+            <span className="text-xl md:text-2xl font-brand font-bold text-[#0F172A] leading-none">مفاتيح</span>
+            <span className="text-[9px] font-ui font-bold text-slate-400 uppercase tracking-widest mt-1">Logistics Intelligence</span>
+          </div>
         </div>
-    </nav>
-
-    <header class="hero">
-        <div class="container">
-            <h1>كشف التباينات المالية في فواتير الشحن</h1>
-            <p class="hero-description">
-                نقوم بتحليل بيانات الشحن والمطابقة الفنية بين الخدمة الفعلية والفوترة الصادرة، للكشف عن التباينات التشغيلية التي قد تستحق المراجعة والمعالجة المالية.
-            </p>
-            <a href="https://tally.so/r/VLlzYa" target="_blank" class="btn">ابدأ التدقيق المجاني الآن</a>
-            
-            <div class="trust-line">
-                متوافق مع تقارير: أنظمة إدارة الطلبات | منصات التجارة الإلكترونية | كشوفات حساب الناقلين
-            </div>
-
-            <div class="sample-box">
-                لا تعرف كيف تصدر ملف البيانات؟ 
-                <a href="guide.html">تعرف على الطريقة</a> | 
-                <a href="sample.csv" download>نموذج الملف</a>
-            </div>
-        </div>
+        <nav className="hidden lg:flex items-center gap-8 text-sm font-semibold text-[#64748B] font-ui">
+          <button onClick={() => navigate('about')} className={`hover:text-signal transition ${currentPage === 'about' ? 'text-signal' : ''}`}>عن مفاتيح</button>
+          <button onClick={() => goToSection('home', 'how-it-works')} className="hover:text-signal transition">كيف يعمل</button>
+          <button onClick={() => goToSection('home', 'architecture')} className="hover:text-signal transition">بنية النظام</button>
+          <button onClick={() => navigate('partners')} className={`hover:text-signal transition ${currentPage === 'partners' ? 'text-signal' : ''}`}>الشراكات</button>
+          <a href="https://tally.so/r/VLlzYa" target="_blank" rel="noopener noreferrer" className="font-bold text-signal">تواصل معنا</a>
+        </nav>
+        <button onClick={() => navigate('upload')} className="btn-primary text-white px-6 py-2.5 rounded-xl font-ui font-bold text-sm shadow-lg shadow-blue-500/20">
+          ابدأ تحليل البيانات
+        </button>
+      </div>
     </header>
+  );
 
-    <section id="how-it-works">
-        <div class="container">
-            <h2 class="section-title">كيف تعمل مفاتيح؟</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>1. رفع ملف البيانات</h3>
-                    <p>قم برفع ملف بيانات الشحن المستخرج من نظام إدارة الطلبات أو من تقارير الشحن الخاصة بمتجرك.</p>
-                </div>
-                <div class="card">
-                    <h3>2. تحليل البيانات</h3>
-                    <p>نقوم بمراجعة البيانات التشغيلية ومطابقتها مع معلومات الفوترة للكشف عن التباينات المحتملة.</p>
-                </div>
-                <div class="card">
-                    <h3>3. إصدار تقرير التدقيق</h3>
-                    <p>يتم إعداد تقرير يوضح الحالات التي قد تستحق المراجعة أو المطالبة بالتصحيح.</p>
-                </div>
+  const Footer = () => (
+    <footer className="bg-[#0F172A] text-white pt-24 pb-12 text-right border-t border-white/5 font-ui">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
+          <div className="col-span-1 lg:col-span-2 space-y-8">
+            <div className="flex items-center gap-4 justify-end lg:justify-start lg:flex-row-reverse">
+              <span className="text-3xl font-brand font-black tracking-tight">مفاتيح</span>
+              <MfatyhLogo size={50} color="#FFFFFF" />
             </div>
+            <p className="text-slate-400 max-w-sm leading-relaxed font-medium">
+              مفاتيح طبقة تحليل بيانات لوجستية مستقلة تعمل فوق أنظمة الشحن والتجارة الإلكترونية لتحويل بيانات الشحن إلى رؤية تشغيلية ومالية.
+            </p>
+          </div>
+          <div>
+            <h5 className="font-bold mb-6 text-white uppercase tracking-widest text-[10px]">المنصة</h5>
+            <ul className="space-y-4 text-xs text-slate-500 font-bold">
+              <li><button onClick={() => navigate('about')} className="hover:text-signal transition text-right">عن مفاتيح</button></li>
+              <li><button onClick={() => navigate('partners')} className="hover:text-signal transition text-right">حلول الشراكة</button></li>
+              <li><button onClick={() => navigate('upload')} className="hover:text-signal transition font-bold text-signal text-right">تحليل البيانات</button></li>
+            </ul>
+          </div>
+          <div>
+            <h5 className="font-bold mb-6 text-white uppercase tracking-widest text-[10px]">التواصل والاعتماد</h5>
+            <ul className="space-y-4 text-xs text-slate-500 font-bold text-right">
+              <li><a href="https://tally.so/r/VLlzYa" target="_blank" rel="noopener noreferrer" className="hover:text-signal transition font-bold">اطلب شراكة</a></li>
+              <li className="text-slate-400 opacity-60">ISO 9001:2015 Certified</li>
+              <li className="text-slate-400 opacity-60">Accredited by Jadeer</li>
+            </ul>
+          </div>
         </div>
-    </section>
-
-    <section style="background: var(--accent);">
-        <div class="container">
-            <h2 class="section-title">مؤشرات قد تستحق المراجعة</h2>
-            <div class="indicators-grid">
-                <div class="indicator-card">
-                    <h4>تسليم بعد المدة المتوقعة</h4>
-                    <p>وجود شحنات تم تسليمها بعد المدة التشغيلية المعتادة أو بعد المدة المتفق عليها في مستوى الخدمة.</p>
-                </div>
-                <div class="indicator-card">
-                    <h4>اختلاف الوزن المفوتر</h4>
-                    <p>ظهور أوزان مفوترة أعلى من المتوقع بشكل متكرر قد يكون مؤشراً على تباين يحتاج للمراجعة.</p>
-                </div>
-                <div class="indicator-card">
-                    <h4>حالات شحن غير مكتملة الوضوح</h4>
-                    <p>وجود شحنات بحالات تشغيلية غير واضحة أو متغيرة بين أكثر من مصدر بيانات.</p>
-                </div>
-                <div class="indicator-card">
-                    <h4>فروقات بين الخدمة والفوترة</h4>
-                    <p>قد تظهر أحياناً حالات تستدعي مطابقة أدق بين بيانات التنفيذ الفعلي وما ورد في كشف الحساب.</p>
-                </div>
-            </div>
+        <div className="border-t border-white/5 pt-8 text-center text-[10px] text-slate-600 font-bold leading-7">
+          <p>© 2026 Mfatyh Intelligence — تقنية سعودية لتحليل البيانات التشغيلية واللوجستية.</p>
+          <p className="mt-1">مفاتيح مملوك ومطوّّر بالكامل بواسطة Five Al Durub، وهي منشأة سعودية مسجلة منذ 2020، حاصلة على شهادة ISO 9001:2015 واعتماد جدير.</p>
         </div>
-    </section>
-
-    <section class="report-section">
-        <div class="container">
-            <h2 class="section-title">مثال لنتائج تقرير تحليلي سابق</h2>
-            <div class="report-preview">
-                <div class="report-header">
-                    <p style="font-weight: 600; color: var(--primary);">ملخص التدقيق التحليلي للبيانات</p>
-                </div>
-                <div class="stat-grid">
-                    <div class="stat-item">
-                        <div class="stat-label">إجمالي الشحنات المراجعة</div>
-                        <div class="stat-val">842 شحنة</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-label">حالات تستحق المراجعة</div>
-                        <div class="stat-val">32 حالة</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-label">تباين مالي مرصود</div>
-                        <div class="stat-val" style="color: var(--danger);">1,330 ر.س</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-label">جودة اكتمال البيانات</div>
-                        <div class="stat-val" style="color: var(--success);">94%</div>
-                    </div>
-                </div>
-                <p style="margin-top: 25px; font-size: 13px; color: var(--text-muted); text-align: center;">
-                    * هذا المثال يعرض نموذجاً لفرص التحسين المرصودة في بيانات شحن حقيقية.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <section id="faq">
-        <div class="container">
-            <h2 class="section-title">الأسئلة الشائعة</h2>
-            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));">
-                <div class="faq-item">
-                    <h4>هل أحتاج لمشاركة بيانات العملاء الشخصية؟</h4>
-                    <p style="font-size: 15px; color: var(--text-muted);">لا، التدقيق يتطلب فقط البيانات التشغيلية (رقم التتبع، تاريخ الشحن، الحالة، والتكلفة). يمكنك حذف الأعمدة الشخصية قبل الرفع.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>ما هي الرسوم المقدمة للخدمة؟</h4>
-                    <p style="font-size: 15px; color: var(--text-muted);">التدقيق الأول مجاني تماماً. وفي حال وجود مطالبات مستحقة، نعمل بنظام أتعاب النجاح فقط على المبالغ المستردة فعلياً.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>ما هي شركات الشحن المدعومة؟</h4>
-                    <p style="font-size: 15px; color: var(--text-muted);">يمكن تحليل بيانات الشحن ومراجعة التباينات التشغيلية مع عدد واسع من مزودي الشحن، بحسب طبيعة البيانات المتاحة في الملف المرفوع.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>ما المدة المستغرقة لاستلام التقرير؟</h4>
-                    <p style="font-size: 15px; color: var(--text-muted);">يتم إصدار تقرير التدقيق المبدئي خلال 24 ساعة عمل من وقت استلام الملف المكتمل.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section style="background: var(--accent);">
-        <div class="container">
-            <div class="about-box">
-                <h2 style="margin-bottom: 25px;">عن مفاتيح</h2>
-                <p>مفاتيح خدمة تحليل بيانات متخصصة في مراجعة بيانات الشحن والتباينات التشغيلية في فواتير الخدمات اللوجستية.</p>
-                <p>تساعد مفاتيح المتاجر على تحليل تقارير الشحن وفهم العلاقة بين البيانات التشغيلية والفوترة الصادرة من مزودي الشحن، بهدف الكشف عن الحالات التي قد تستحق المراجعة أو التصحيح.</p>
-                <p>تعتمد منهجية التحليل على مبادئ تدقيق الجودة وتحليل البيانات التشغيلية.</p>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p style="font-weight: 600; font-size: 15px; margin-bottom: 10px;">يتم تنفيذ كافة عمليات التحليل تحت إشراف مختصين في تدقيق البيانات والعمليات اللوجستية.</p>
-            <p style="font-weight: 500;">مفاتيح – تدقيق وتحليل بيانات الشحن للمتاجر الإلكترونية.</p>
-            
-            <div class="footer-links">
-<a href="mailto:Mfatyh@algtc.com">البريد الإلكتروني</a>
-<div class="footer-links">
-<a href="https://wa.me/966547568675?text=مرحباً%20أود%20إرسال%20ملف%20بيانات%20الشحن%20لتحليل%20التباينات" target="_blank">واتساب</a>
-<a href="articles.html">المدونة</a>
-</div>
-
-<a href="articles.html">المدونة</a>
-</div>
-
-            
-            <p class="copyright">© 2026 جميع الحقوق محفوظة لـ مفاتيح</p>
-        </div>
+      </div>
     </footer>
+  );
 
-    <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/966547568675?text=مرحباً%20أود%20إرسال%20ملف%20بيانات%20الشحن%20لتحليل%20التباينات" target="_blank" class="whatsapp-float">
-        <span>💬 استشارة سريعة</span>
-    </a>
+  // --- View Contents ---
 
-</body>
-</html>
+  const HomePage = () => (
+    <div className="animate-sovereign">
+      {/* 1. Hero Section */}
+      <section className="pt-44 pb-28 hero-gradient text-white overflow-hidden relative text-right">
+        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+          <div className="space-y-10">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full badge-pro text-xs font-ui font-bold uppercase tracking-widest">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+              </span>
+              طبقة سعودية لتحليل البيانات اللوجستية
+            </div>
+            <div className="space-y-4">
+              <h1 className="text-5xl lg:text-7xl font-brand font-black leading-tight tracking-tight">حوّل بيانات الشحن <br /><span className="text-signal">إلى رؤية تشغيلية ومالية</span></h1>
+              <p className="text-lg text-slate-400 max-w-xl leading-relaxed font-ui font-medium">
+                طبقة ذكاء تحليلية تعمل فوق أنظمة الشحن والتجارة الإلكترونية لتحويل بيانات الشحن إلى مؤشرات تشغيلية ومالية قابلة للتنفيذ.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-4 pt-2 justify-end lg:justify-start lg:flex-row-reverse">
+              <button onClick={() => navigate('upload')} className="btn-primary font-brand px-10 py-5 rounded-2xl font-black text-lg shadow-xl shadow-blue-600/30 hover:scale-105 transition-all text-white">ابدأ تحليل بيانات الشحن</button>
+              <button onClick={() => goToSection('home', 'how-it-works')} className="bg-white/5 font-brand border border-white/10 hover:bg-white/10 px-10 py-5 rounded-2xl font-black text-lg transition text-center min-w-[220px]">شاهد كيف يعمل مفاتيح</button>
+            </div>
+          </div>
+          <div className="relative">
+             <div className="absolute -inset-10 bg-blue-500/20 blur-[120px] rounded-full"></div>
+             <div className="glass-card rounded-[2.5rem] p-10 relative shadow-2xl">
+                <div className="flex items-center justify-between mb-10 border-b border-slate-200 pb-8 text-[#0F172A]">
+                  <div className="text-right">
+                    <p className="text-[10px] font-ui font-bold uppercase text-slate-400 mb-1 tracking-widest">نموذج لفروقات مالية محتملة من عينة بيانات</p>
+                    <h4 className="text-4xl font-ui font-black tracking-tight text-[#0F172A]">12,540 ر.س</h4>
+                  </div>
+                  <div className="bg-blue-50 p-4 rounded-2xl border border-blue-100 shadow-inner"><LineChart className="text-signal" size={40} /></div>
+                </div>
+                <div className="space-y-4 text-[#0F172A] font-ui">
+                  <div className="p-4 bg-slate-50/50 rounded-2xl flex justify-between items-center border border-slate-100">
+                    <span className="text-sm font-bold text-slate-600">فروقات الوزن الحجمي</span>
+                    <span className="text-rose-500 font-bold font-sans">6,200 ر.س</span>
+                  </div>
+                  <div className="p-4 bg-slate-50/50 rounded-2xl flex justify-between items-center border border-slate-100">
+                    <span className="text-sm font-bold text-slate-600">فروقات رسوم المرتجعات</span>
+                    <span className="text-rose-500 font-bold font-sans">4,400 ر.س</span>
+                  </div>
+                </div>
+             </div>
+          </div>
+        </div>
+      </section>
 
+      {/* 1.1 Social Proof Banner */}
+      <section className="py-8 bg-slate-50 border-b border-[#E2E8F0]">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-center gap-6 opacity-60">
+           <p className="text-xs font-bold text-[#64748B] uppercase tracking-widest flex items-center gap-2">
+             <Users size={16} /> Trusted by logistics teams and e-commerce operators in Saudi Arabia
+           </p>
+        </div>
+      </section>
+
+      {/* 2. Indicators & Metrics */}
+      <section className="py-24 bg-white border-b border-[#E2E8F0] font-ui">
+        <div className="max-w-7xl mx-auto px-6 space-y-16 text-right">
+          <div className="grid md:grid-cols-3 gap-8 text-center">
+            <div className="space-y-1">
+              <h4 className="text-3xl font-black text-[#0F172A] tracking-tighter">5.4%</h4>
+              <p className="text-[10px] text-[#64748B] font-bold uppercase tracking-widest">متوسط فروقات محتملة في عينات البيانات</p>
+            </div>
+            <div className="space-y-1 md:border-r border-[#E2E8F0]">
+              <h4 className="text-3xl font-black text-[#0F172A] uppercase tracking-tighter">Big Data</h4>
+              <p className="text-[10px] text-[#64748B] font-bold uppercase tracking-widest leading-relaxed">مصمم لمعالجة وتحليل ملايين سجلات بيانات الشحن</p>
+            </div>
+            <div className="space-y-1 md:border-r border-[#E2E8F0]">
+              <h4 className="text-3xl font-black text-[#0F172A] tracking-tighter">24 ساعة</h4>
+              <p className="text-[10px] text-[#64748B] font-bold uppercase tracking-widest">لاستخراج المؤشرات التشغيلية من البيانات</p>
+            </div>
+          </div>
+
+          {/* Case Study Section (NEW) */}
+          <div className="bg-[#0F172A] p-12 rounded-[3.5rem] relative overflow-hidden text-white shadow-2xl">
+             <div className="absolute top-0 left-0 p-10 opacity-5"><FileSearch size={200} /></div>
+             <div className="flex flex-col md:flex-row justify-between items-center gap-10 relative z-10">
+                <div className="space-y-6 md:w-1/2 text-right">
+                   <div className="inline-block px-4 py-1 rounded-full bg-blue-500/20 text-blue-400 text-[10px] font-bold uppercase tracking-widest">Case Study</div>
+                   <h3 className="text-4xl font-brand font-black leading-tight">تحليل 3,200 شحنة في قطاع التجميل</h3>
+                   <p className="text-lg text-slate-400 leading-relaxed font-medium">
+                     كشف التدقيق عن تباينات جوهرية في احتساب الوزن الحجمي ورسوم المرتجعات، مما أتاح للإدارة رؤية مالية دقيقة لاسترداد الهدر المفقود.
+                   </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:w-1/2">
+                   <div className="bg-white/5 border border-white/10 p-6 rounded-3xl text-center backdrop-blur-md">
+                      <div className="text-rose-500 font-brand font-black text-3xl">82 حالة</div>
+                      <p className="text-[10px] text-slate-400 font-bold uppercase mt-2">تباين في الوزن الحجمي</p>
+                   </div>
+                   <div className="bg-white/5 border border-white/10 p-6 rounded-3xl text-center backdrop-blur-md">
+                      <div className="text-emerald-500 font-brand font-black text-3xl">96%</div>
+                      <p className="text-[10px] text-slate-400 font-bold uppercase mt-2">دقة رصد تجاوزات SLA</p>
+                   </div>
+                </div>
+             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. How it Works */}
+      <section id="how-it-works" className="py-24 bg-slate-50 text-right">
+        <div className="max-w-7xl mx-auto px-6 text-center space-y-16">
+            <div className="space-y-4">
+              <h2 className="text-4xl font-brand font-black text-[#0F172A] tracking-tight">كيف يعمل مفاتيح؟</h2>
+              <p className="text-[#64748B] text-lg font-ui max-w-3xl mx-auto leading-relaxed">
+                تعمل منصة مفاتيح كطبقة تحليل بيانات فوق الأنظمة القائمة لاستخراج المؤشرات التشغيلية وتحسين وضوح بيانات الشحن.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-8 font-ui">
+                {[
+                  { title: "رفع البيانات", icon: <UploadCloud />, desc: "رفع تقارير بيانات الشحن أو العمليات اللوجستية بصيغ CSV أو Excel أو PDF" },
+                  { title: "تحليل البيانات", icon: <Cpu />, desc: "تحليل بيانات الشحن باستخدام نماذج تحليل البيانات الضخمة لاستخراج الأنماط التشغيلية" },
+                  { title: "المؤشرات التشغيلية", icon: <LayoutDashboard />, desc: "استخراج مؤشرات الأداء والفروقات المحتملة في بيانات الشحن" }
+                ].map((item, idx) => (
+                  <div key={idx} className="bg-white p-12 rounded-[3rem] border border-[#E2E8F0] shadow-sm hover:shadow-lg transition-all text-center group">
+                    <div className="w-16 h-16 bg-blue-50 text-signal rounded-2xl flex items-center justify-center mb-8 mx-auto group-hover:scale-110 transition-transform">{item.icon}</div>
+                    <h4 className="text-xl font-brand font-bold mb-4 text-[#0F172A]">{item.title}</h4>
+                    <p className="text-sm text-[#64748B] font-medium leading-relaxed">{item.desc}</p>
+                  </div>
+                ))}
+            </div>
+        </div>
+      </section>
+
+      {/* 4. Architecture */}
+      <section id="architecture" className="py-24 bg-slate-900 text-white text-right overflow-hidden relative">
+        <div className="absolute inset-0 bg-blue-500/5 blur-[120px] rounded-full -top-40 -left-40"></div>
+        <div className="max-w-7xl mx-auto px-6 relative z-10 space-y-20 text-center">
+          <div className="space-y-4">
+             <h2 className="text-4xl font-brand font-black tracking-tight">بنية مفاتيح لتحليل البيانات اللوجستية</h2>
+             <p className="text-slate-400 text-lg font-ui max-w-4xl mx-auto leading-relaxed text-center">
+               تعمل مفاتيح كطبقة تحليل بيانات مستقلة تجمع بيانات الشحن والعمليات وتحوّلها إلى مؤشرات تشغيلية ورؤية مالية واضحة تدعم القرار الفوري.
+             </p>
+          </div>
+          <div className="flex flex-col gap-4 max-w-4xl mx-auto font-ui text-right">
+             <div className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-md relative border-r-4 border-signal">
+                <div className="flex flex-col md:flex-row justify-between items-center gap-8 text-right">
+                   <div className="space-y-1 w-full md:w-1/3 text-right">
+                      <h4 className="text-xl font-brand font-bold text-signal">1. طبقة البيانات</h4>
+                      <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Data Sources</p>
+                   </div>
+                   <div className="flex flex-wrap gap-3 justify-center md:justify-end w-full md:w-2/3">
+                      {['منصات التجارة', 'تقارير الشحن', 'أنظمة الفلفلمنت', 'سجلات العمليات'].map(item => (
+                        <span key={item} className="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-xs font-medium">{item}</span>
+                      ))}
+                   </div>
+                </div>
+             </div>
+             <div className="flex justify-center py-2"><ArrowDown className="text-slate-700" size={24} /></div>
+             <div className="bg-signal rounded-3xl p-10 relative shadow-[0_0_50px_-12px_rgba(14,165,233,0.5)]">
+                <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+                   <div className="space-y-1 w-full md:w-1/3 text-white text-right">
+                      <h4 className="text-2xl font-brand font-black">2. طبقة التحليل</h4>
+                      <p className="text-[10px] text-blue-100 uppercase tracking-widest font-bold">Analysis Engine</p>
+                   </div>
+                   <div className="grid grid-cols-2 gap-4 w-full md:w-2/3">
+                      <div className="bg-white/10 p-4 rounded-2xl flex items-center gap-3"><Zap size={20} className="text-white" /><span className="text-xs font-bold text-white tracking-tight">استخراج الأنماط</span></div>
+                      <div className="bg-white/10 p-4 rounded-2xl flex items-center gap-3"><Search size={20} className="text-white" /><span className="text-xs font-bold text-white tracking-tight">رصد التباينات</span></div>
+                   </div>
+                </div>
+             </div>
+             <div className="flex justify-center py-2"><ArrowDown className="text-slate-700" size={24} /></div>
+             <div className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-md relative border-r-4 border-signal text-right">
+                <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+                   <div className="space-y-1 w-full md:w-1/3">
+                      <h4 className="text-xl font-brand font-bold text-signal">3. طبقة الرؤية</h4>
+                      <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Actionable Insights</p>
+                   </div>
+                   <div className="flex flex-wrap gap-3 justify-center md:justify-end w-full md:w-2/3">
+                      {['لوحات المؤشرات', 'تقارير تحليلية', 'رؤية مالية', 'قرار تشغيلي'].map(item => (
+                        <span key={item} className="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-xs font-medium">{item}</span>
+                      ))}
+                   </div>
+                </div>
+             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Partner Section */}
+      <section id="integrations" className="py-24 bg-white overflow-hidden text-right border-t border-[#E2E8F0]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-3xl mb-16 space-y-4">
+            <h2 className="text-4xl font-brand font-black text-[#0F172A] mb-6 leading-tight tracking-tight">مفاتيح يعزز أنظمة الشركاء</h2>
+            <p className="text-lg text-[#64748B] leading-relaxed font-medium">
+              لا يستبدل مفاتيح أنظمة الشحن أو شركات الفلفلمنت. بل يعمل كطبقة تحليل بيانات مستقلة فوق الأنظمة القائمة، لمساعدة الشركاء على فهم بيانات الشحن بصورة أوضح وتحسين جودة التقارير.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            <div className="p-10 bg-slate-50 rounded-3xl border border-[#E2E8F0] space-y-4 shadow-sm hover:shadow-md transition-all text-right">
+                <Layers className="text-signal" size={28} />
+                <h4 className="font-bold text-[#0F172A] text-lg">لا يغير سير العمل</h4>
+                <p className="text-sm text-[#64748B] font-medium leading-relaxed">يعمل فوق الأنظمة الحالية دون الحاجة إلى تغيير البنية التشغيلية.</p>
+            </div>
+            <div className="p-10 bg-slate-50 rounded-3xl border border-[#E2E8F0] space-y-4 shadow-sm hover:shadow-md transition-all text-right">
+                <TrendingUp className="text-signal" size={28} />
+                <h4 className="font-bold text-[#0F172A] text-lg">يعزز خدمات الشريك</h4>
+                <p className="text-sm text-[#64748B] font-medium leading-relaxed">يساعد الشركاء على تقديم تقارير تشغيلية أكثر وضوحاً وشفافية لعملائهم.</p>
+            </div>
+            <div className="p-10 bg-slate-50 rounded-3xl border border-[#E2E8F0] space-y-4 shadow-sm hover:shadow-md transition-all text-right">
+                <ShieldCheck className="text-signal" size={28} />
+                <h4 className="font-bold text-[#0F172A] text-lg">البيانات تبقى لدى الشريك</h4>
+                <p className="text-sm text-[#64748B] font-medium leading-relaxed tracking-tight">مفاتيح يحلل البيانات التشغيلية فقط دون التدخل في العلاقة التجارية بين الشريك وعملائه.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+
+  const PartnersPage = () => (
+    <div className="animate-sovereign pt-20 text-right">
+      <section className="py-24 bg-[#0F172A] text-white text-center overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 space-y-8">
+            <h1 className="text-5xl lg:text-7xl font-brand font-black leading-tight tracking-tight tracking-tighter">حلول الشراكة المؤسسية</h1>
+            <p className="text-xl text-slate-400 font-ui font-medium leading-relaxed max-w-4xl mx-auto leading-relaxed">
+              تكامل استراتيجي يحول "مفاتيح" إلى طبقة ذكاء إضافية لخدماتكم اللوجستية، مما يعزز الثقة والشفافية مع عملائكم في بيئات العمل القائمة.
+            </p>
+            <div className="mt-12">
+              <a href="https://tally.so/r/VLlzYa" target="_blank" rel="noopener noreferrer" className="bg-signal text-white px-12 py-5 rounded-2xl font-brand font-black text-xl shadow-2xl hover:scale-105 transition-all inline-block tracking-wide">اطلب شراكة استراتيجية</a>
+            </div>
+        </div>
+      </section>
+
+      <section className="py-24 bg-white font-ui">
+        <div className="max-w-7xl mx-auto px-6 text-center space-y-16">
+            <h2 className="text-3xl font-brand font-black text-[#0F172A] tracking-tight uppercase tracking-widest">نماذج التعاون المعتمدة</h2>
+            <div className="grid md:grid-cols-3 gap-10 text-right">
+                {[
+                  { title: "شريك تشغيلي", icon: <Settings />, desc: "تضمين تقارير تحليل البيانات ضمن الخدمات التشغيلية المقدمة للعملاء لرفع وضوح الأداء وجودة الخدمة." },
+                  { title: "شريك تكامل بيانات", icon: <Database />, desc: "تهيئة تدفق البيانات بين الأنظمة التشغيلية وطبقة مفاتيح التحليلية لاستخراج مؤشرات دقيقة وعميقة." },
+                  { title: "شريك استراتيجي", icon: <Target />, desc: "تعاون مؤسسي لتطوير معايير الجودة والنزاهة في البيانات اللوجستية الوطنية السعودية." }
+                ].map((model, idx) => (
+                  <div key={idx} className="p-12 bg-slate-50 rounded-[3.5rem] border border-[#E2E8F0] space-y-6 text-right hover:bg-white hover:shadow-xl transition-all">
+                    <div className="text-signal">{model.icon}</div>
+                    <h4 className="text-2xl font-brand font-bold text-[#0F172A] tracking-tight">{model.title}</h4>
+                    <p className="text-sm text-[#64748B] font-medium leading-relaxed tracking-tight">{model.desc}</p>
+                  </div>
+                ))}
+            </div>
+        </div>
+      </section>
+    </div>
+  );
+
+  const AboutPage = () => (
+    <div className="animate-sovereign pt-20 text-right">
+      <section className="py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-3xl space-y-8 text-right">
+            <h1 className="text-6xl font-brand font-black text-[#0F172A] tracking-tighter">عن مفاتيح</h1>
+            <p className="text-2xl text-[#64748B] font-ui font-medium leading-relaxed">
+              مفاتيح هي العدسة التحليلية المصممة لتعزيز النزاهة والوضوح في البيانات اللوجستية، وتحويل تعقيد البيانات إلى رؤية تشغيلية ومالية واضحة.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Corporate Trust Strip */}
+      <section className="py-12 bg-[#F8FAFC] border-t border-b border-[#E2E8F0] font-ui">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-4 gap-6 text-center">
+            <div className="p-5 bg-white rounded-2xl border border-[#E2E8F0] shadow-sm">
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Owned & Developed By</p>
+              <h4 className="text-base font-bold text-[#0F172A] mt-2 flex items-center justify-center gap-2 font-brand">
+                <Building2 size={16} className="text-signal" /> Five Al Durub
+              </h4>
+            </div>
+            <div className="p-5 bg-white rounded-2xl border border-[#E2E8F0] shadow-sm">
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Established</p>
+              <h4 className="text-base font-bold text-[#0F172A] mt-2 flex items-center justify-center gap-2 font-brand">
+                <Calendar size={16} className="text-signal" /> Since 2020
+              </h4>
+            </div>
+            <div className="p-5 bg-white rounded-2xl border border-[#E2E8F0] shadow-sm">
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Certification</p>
+              <h4 className="text-base font-bold text-[#0F172A] mt-2 flex items-center justify-center gap-2 font-brand">
+                <Award size={16} className="text-signal" /> ISO 9001:2015
+              </h4>
+            </div>
+            <div className="p-5 bg-white rounded-2xl border border-[#E2E8F0] shadow-sm">
+              <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Accreditation</p>
+              <h4 className="text-base font-bold text-[#0F172A] mt-2 flex items-center justify-center gap-2 font-brand">
+                <CheckCircle size={16} className="text-signal" /> جـديـر
+              </h4>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24 bg-white font-ui text-right">
+        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16">
+          <div className="space-y-6 p-12 bg-slate-50 rounded-[3rem] border border-[#E2E8F0] shadow-sm hover:border-signal transition-colors text-right">
+            <Globe size={32} className="text-signal" />
+            <h2 className="text-3xl font-brand font-black text-[#0F172A]">الرؤية الاستراتيجية</h2>
+            <p className="text-lg text-[#64748B] font-medium leading-relaxed">
+               بناء بنية تحتية معلوماتية ترفع كفاءة سلاسل الإمداد وتدعم جودة البيانات اللوجستية في المملكة العربية السعودية تحت مظلة "فيف الدروب".
+            </p>
+          </div>
+          <div className="space-y-6 p-12 bg-slate-50 rounded-[3rem] border border-[#E2E8F0] shadow-sm hover:border-signal transition-colors text-right">
+            <PieChart size={32} className="text-signal" />
+            <h2 className="text-3xl font-brand font-black text-[#0F172A]">القيمة الجوهرية</h2>
+            <p className="text-lg text-[#64748B] font-medium leading-relaxed">
+              تمكين الشركات والمؤسسات من استعادة الفروقات المالية عبر تحويل البيانات التشغيلية المعقدة إلى مؤشرات واضحة وقابلة للتنفيذ الفوري.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+
+  const UploadPage = () => (
+    <div className="animate-sovereign pt-20 bg-slate-50 min-h-screen font-ui text-right">
+      <section className="py-24 max-w-5xl mx-auto px-6">
+        <h1 className="text-5xl font-brand font-black text-[#0F172A] tracking-tight mb-8 text-center">ابدأ تحليل بيانات الشحن</h1>
+        <p className="text-xl text-[#64748B] mb-12 text-center leading-relaxed font-medium">ارفع سجلات البيانات اللوجستية (CSV, Excel, PDF)، وسيقوم المحرك باستخراج النتائج خلال 24 ساعة.</p>
+        
+        <div className="grid lg:grid-cols-12 gap-8 items-start">
+           <div className="lg:col-span-8">
+              <div className="bg-white border-2 border-dashed border-[#E2E8F0] rounded-[3.5rem] p-20 flex flex-col items-center justify-center text-center space-y-6 hover:border-signal transition-all cursor-pointer group shadow-sm">
+                  <UploadCloud size={80} className="text-signal group-hover:scale-110 transition-transform" />
+                  <div className="space-y-2">
+                    <h4 className="text-3xl font-brand font-bold text-[#0F172A]">اسحب ملف البيانات هنا لرفعه</h4>
+                    <p className="text-slate-400 font-bold font-ui uppercase tracking-widest text-[10px] pt-4">معالجة آمنة ومشفرة للبيانات | Secure Data Handling</p>
+                  </div>
+              </div>
+
+              {/* Data Sample Preview (NEW) */}
+              <div className="mt-8 bg-white p-10 rounded-[3rem] border border-[#E2E8F0] shadow-sm">
+                 <div className="flex justify-between items-center mb-6">
+                    <h4 className="text-lg font-bold text-[#0F172A] flex items-center gap-2"><Database size={18} className="text-signal"/> نموذج ملف البيانات (Data Sample)</h4>
+                    <button className="text-xs font-bold text-signal hover:underline">تحميل نموذج CSV</button>
+                 </div>
+                 <div className="overflow-x-auto bg-slate-50 rounded-2xl border border-slate-100 p-4">
+                    <table className="w-full text-[10px] font-mono text-slate-500">
+                       <thead>
+                          <tr className="border-b border-slate-200">
+                             <th className="pb-2 text-right">Tracking Number</th>
+                             <th className="pb-2 text-right">Carrier</th>
+                             <th className="pb-2 text-right">Ship Date</th>
+                             <th className="pb-2 text-right">Cost</th>
+                             <th className="pb-2 text-right">Status</th>
+                          </tr>
+                       </thead>
+                       <tbody>
+                          <tr><td className="pt-2">3138291290</td><td className="pt-2">Aramex</td><td className="pt-2">2026-02-15</td><td className="pt-2">34.00</td><td className="pt-2">Delivered</td></tr>
+                          <tr><td className="pt-2">8729192110</td><td className="pt-2">SMSA</td><td className="pt-2">2026-02-16</td><td className="pt-2">12.50</td><td className="pt-2">In Transit</td></tr>
+                       </tbody>
+                    </table>
+                 </div>
+              </div>
+           </div>
+
+           {/* Security & Features Side (NEW) */}
+           <div className="lg:col-span-4 space-y-6">
+              <div className="bg-white p-8 rounded-[2.5rem] border border-[#E2E8F0] shadow-sm space-y-6">
+                 <h4 className="text-lg font-bold text-[#0F172A] border-b border-slate-100 pb-4 flex items-center gap-2">
+                    <ShieldCheck size={20} className="text-emerald-500"/> معايير أمان البيانات
+                 </h4>
+                 <ul className="space-y-4">
+                    <li className="flex items-start gap-3 justify-end text-xs font-medium text-slate-600">
+                       <p>تشفير كامل لكافة الملفات المرفوعة (End-to-End Encryption).</p>
+                       <Lock size={14} className="text-signal shrink-0 mt-1"/>
+                    </li>
+                    <li className="flex items-start gap-3 justify-end text-xs font-medium text-slate-600">
+                       <p>حذف تلقائي للملفات فور انتهاء عملية التحليل.</p>
+                       <Trash2 size={14} className="text-signal shrink-0 mt-1"/>
+                    </li>
+                    <li className="flex items-start gap-3 justify-end text-xs font-medium text-slate-600">
+                       <p>البيانات لا تتم مشاركتها مع أي أطراف ثالثة نهائياً.</p>
+                       <CheckCircle size={14} className="text-signal shrink-0 mt-1"/>
+                    </li>
+                 </ul>
+              </div>
+
+              <a href="https://tally.so/r/VLlzYa" target="_blank" rel="noopener noreferrer" className="bg-[#0F172A] p-10 rounded-[2.5rem] border border-white/10 flex flex-col items-center justify-center text-center hover:bg-slate-900 transition group shadow-xl">
+                <MessageSquare size={32} className="text-signal mb-4 group-hover:scale-110 transition" />
+                <h4 className="font-brand font-bold text-white text-lg">تحتاج مساعدة؟</h4>
+                <p className="text-xs text-slate-400 font-medium font-ui mt-2">تحدث مع فريق مفاتيح عبر واتساب</p>
+              </a>
+           </div>
+        </div>
+      </section>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen">
+      <GlobalStyles />
+      <Header />
+      <main>
+        {currentPage === 'home' && <HomePage />}
+        {currentPage === 'partners' && <PartnersPage />}
+        {currentPage === 'upload' && <UploadPage />}
+        {currentPage === 'about' && <AboutPage />}
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+export default App;
 
 
