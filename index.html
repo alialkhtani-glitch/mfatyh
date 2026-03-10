@@ -6,16 +6,70 @@
     <title>مفاتيح | تحليل بيانات الشحن واسترداد التعويضات | فيف الدروب</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
-        :root { --mf-navy: #0F172A; --mf-blue: #0EA5E9; --mf-bg: #F8FAFC; }
-        html { scroll-behavior: smooth; }
-        body { font-family: 'IBM Plex Sans Arabic', sans-serif; background-color: var(--mf-bg); color: #1E293B; margin: 0; padding: 0; overflow-x: hidden; }
-        .hero-gradient { background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%); }
-        .glass-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(226, 232, 240, 0.5); }
-        #banner-text { transition: opacity 0.5s ease-in-out; }
-        header { transition: top 0.3s ease; }
-    </style>
+   <style>
+    /* 1. استدعاء الخط السعودي من مجلد fonts/saudi الموجود عندك */
+    @font-face {
+        font-family: 'Saudi';
+        src: url('fonts/saudi/SaudiWeb-Bold.woff2') format('woff2'),
+             url('fonts/saudi/SaudiWeb-Bold.woff') format('woff');
+        font-weight: 700;
+        font-style: normal;
+    }
+    @font-face {
+        font-family: 'Saudi';
+        src: url('fonts/saudi/SaudiWeb-Regular.woff2') format('woff2'),
+             url('fonts/saudi/SaudiWeb-Regular.woff') format('woff');
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    /* 2. تعريف المتغيرات اللونية */
+    :root { 
+        --mf-navy: #0F172A; 
+        --mf-blue: #0EA5E9; 
+        --mf-bg: #F8FAFC; 
+    }
+
+    html { scroll-behavior: smooth; }
+
+    /* 3. تطبيق الخط السعودي على الجسم والعناوين */
+    body { 
+        font-family: 'Saudi', 'IBM Plex Sans Arabic', sans-serif; 
+        background-color: var(--mf-bg); 
+        color: #1E293B; 
+        margin: 0; 
+        padding: 0; 
+        overflow-x: hidden; 
+    }
+
+    h1, h2, h3, h4, .font-brand { 
+        font-family: 'Saudi', sans-serif; 
+        font-weight: 700; 
+    }
+
+    /* 4. تنسيقات العناصر الأساسية */
+    .top-banner { 
+        background-color: var(--mf-navy); 
+        color: white; 
+        padding: 10px 15px; 
+        text-align: center; 
+        font-size: 14px; 
+        font-weight: 600; 
+        z-index: 1000; 
+        position: fixed; 
+        top: 0; 
+        width: 100%; 
+        min-height: 44px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+    }
+
+    #banner-text { transition: opacity 0.5s ease-in-out; }
+    .hero-gradient { background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%); }
+    .glass-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(226, 232, 240, 0.5); }
+</style>
+
 </head>
 <body class="antialiased text-right">
 
@@ -295,4 +349,5 @@
     </script>
 </body>
 </html>
+
 
