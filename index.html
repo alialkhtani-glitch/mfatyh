@@ -41,11 +41,33 @@
             background-color: var(--mf-bg);
             color: #1E293B;
             overflow-x: hidden;
+            margin: 0;
+            padding: 0;
         }
 
         .font-brand { font-family: 'Saudi', sans-serif; }
         .font-ui { font-family: 'IBM Plex Sans Arabic', sans-serif; }
         
+        /* البنّر العلوي المتطور */
+        .top-banner {
+            background-color: var(--mf-navy);
+            color: white;
+            padding: 8px 12px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 1000;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #banner-text { transition: opacity 0.5s ease-in-out; }
+
         .hero-gradient {
             background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%);
         }
@@ -59,14 +81,14 @@
         .badge-pro {
             background: rgba(14, 165, 233, 0.1);
             border: 1px solid rgba(14, 165, 233, 0.2);
-            color: var(--mf-blue);
+            color: #0EA5E9;
         }
 
-        .text-signal { color: var(--mf-blue); }
-        .bg-signal { background-color: var(--mf-blue); }
+        .text-signal { color: #0EA5E9; }
+        .bg-signal { background-color: #0EA5E9; }
 
         .btn-primary {
-            background-color: var(--mf-blue);
+            background-color: #0EA5E9;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -90,16 +112,22 @@
 </head>
 <body class="antialiased text-right">
 
-    <!-- Header -->
-    <header class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-[#E2E8F0]">
+    <!-- 1. Dynamic Top Banner -->
+    <div class="top-banner font-ui shadow-sm" id="mf-banner">
+        <span id="banner-text">📦 هل تعلم أن بعض شحناتك قد تستحق تعويضاً من شركة الشحن؟</span>
+        <a href="#upload" class="mr-4 text-sky-400 hover:underline">اعرف أكثر</a>
+    </div>
+
+    <!-- Header (Shifted by Banner height via JS) -->
+    <header class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-[#E2E8F0]" id="main-header">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0, 0)">
                 <svg width="40" height="40" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="90" cy="100" r="80" stroke="#0F172A" stroke-width="20" />
+                    <circle cx="90" cy="100" r="80" stroke="#0F172A" strokeWidth="20" />
                     <rect x="65" y="110" width="12" height="30" rx="2" fill="#0EA5E9" />
                     <rect x="84" y="90" width="12" height="50" rx="2" fill="#0EA5E9" />
                     <rect x="103" y="70" width="12" height="70" rx="2" fill="#38BDF8" />
-                    <path d="M170 100H230M210 100V135M230 100V125" stroke="#0F172A" stroke-width="18" stroke-linecap="round" />
+                    <path d="M170 100H230M210 100V135M230 100V125" stroke="#0F172A" strokeWidth="18" strokeLinecap="round" />
                 </svg>
                 <div class="flex flex-col">
                     <span class="text-xl md:text-2xl font-brand font-bold text-[#0F172A] leading-none">مفاتيح</span>
@@ -111,17 +139,16 @@
                 <a href="#how-it-works" class="hover:text-signal transition">كيف يعمل</a>
                 <a href="articles.html" class="hover:text-signal transition">الرؤى والتدقيق</a>
                 <a href="guide.html" class="hover:text-signal transition">دليل البيانات</a>
-                <a href="https://tally.so/r/VLlzYa" target="_blank" rel="noopener noreferrer" class="font-bold text-signal underline decoration-2">تواصل معنا</a>
             </nav>
-            <a href="#upload" class="btn-primary text-white px-5 md:px-6 py-2.5 rounded-xl font-brand font-bold text-xs md:text-sm shadow-lg shadow-blue-500/20">
+            <a href="#upload" class="btn-primary text-white px-6 py-2.5 rounded-xl font-brand font-bold text-sm shadow-lg shadow-blue-500/20">
                 ابدأ التدقيق المجاني
             </a>
         </div>
     </header>
 
     <main>
-        <!-- 1. Hero Section -->
-        <section class="pt-44 pb-28 hero-gradient text-white overflow-hidden relative">
+        <!-- 1. Hero Section (REFINED TITLE) -->
+        <section class="pt-52 pb-28 hero-gradient text-white overflow-hidden relative">
             <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
                 <div class="space-y-10 animate-sovereign text-right">
                     <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full badge-pro text-xs font-ui font-bold uppercase tracking-widest">
@@ -131,14 +158,14 @@
                         </span>
                         طبقة تحليل بيانات لوجستية مستقلة
                     </div>
-                    <div class="space-y-4">
-                        <h1 class="text-5xl lg:text-7xl font-brand font-black leading-tight tracking-tight">حوّل بيانات الشحن <br /><span class="text-signal">إلى رؤية تشغيلية ومالية</span></h1>
-                        <p class="text-lg text-slate-400 max-w-xl leading-relaxed font-ui font-medium">
-                            طبقة تحليل بيانات لوجستية مستقلة تعمل فوق أنظمة الشحن والتجارة الإلكترونية لتحويل بيانات الشحن الصامتة إلى مؤشرات تشغيلية ومالية قابلة للتنفيذ المباشر.
+                    <div class="space-y-6">
+                        <h1 class="text-5xl lg:text-7xl font-brand font-black leading-tight tracking-tight">هل تدفع أكثر مما يجب <br /><span class="text-signal">في فواتير الشحن؟</span></h1>
+                        <p class="text-xl text-slate-300 max-w-xl leading-relaxed font-ui font-medium">
+                            ارفع ملف الشحن واكتشف الفروقات المحتملة مجاناً. نكشف لك الشحنات المتأخرة، المرتجعات غير الدقيقة، والتعويضات المستحقة لمتجرك.
                         </p>
                     </div>
                     <div class="flex flex-wrap gap-4 pt-2">
-                        <a href="#upload" class="btn-primary font-brand px-10 py-5 rounded-2xl font-black text-lg shadow-xl shadow-blue-600/30 hover:scale-105 transition-all text-white text-center min-w-[220px]">ابدأ تحليل بيانات الشحن</a>
+                        <a href="#upload" class="btn-primary font-brand px-10 py-5 rounded-2xl font-black text-lg shadow-xl shadow-blue-600/30 hover:scale-105 transition-all text-white">ابدأ مراجعة الفواتير مجاناً</a>
                         <a href="guide.html" class="bg-white/5 font-brand border border-white/10 hover:bg-white/10 px-10 py-5 rounded-2xl font-black text-lg transition text-center min-w-[220px]">دليل استخراج البيانات</a>
                     </div>
                 </div>
@@ -147,8 +174,8 @@
                     <div class="glass-card rounded-[2.5rem] p-10 relative shadow-2xl border border-white/10">
                         <div class="flex items-center justify-between mb-10 border-b border-slate-200 pb-8 text-[#0F172A]">
                             <div class="text-right">
-                                <p class="text-[10px] font-ui font-bold uppercase text-slate-400 mb-1 tracking-widest">نموذج لمؤشرات مالية مستخرجة من عينة بيانات</p>
-                                <h4 class="text-4xl font-ui font-black tracking-tighter">12,540 ر.س</h4>
+                                <p class="text-[10px] font-ui font-bold uppercase text-slate-400 mb-1 tracking-widest">نموذج لمبالغ تم كشفها لمتجر حقيقي</p>
+                                <h4 class="text-4xl font-ui font-black tracking-tighter">12,540 ريال</h4>
                             </div>
                             <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100 shadow-inner text-signal">
                                 <i class="fas fa-chart-line fa-2x"></i>
@@ -157,11 +184,11 @@
                         <div class="space-y-4 text-[#0F172A] font-ui">
                             <div class="p-4 bg-slate-50/50 rounded-2xl flex justify-between items-center border border-slate-100">
                                 <span class="text-sm font-bold text-slate-600">فروقات الوزن الحجمي</span>
-                                <span class="text-rose-500 font-bold">6,200 ر.س</span>
+                                <span class="text-rose-500 font-bold">6,200 ريال</span>
                             </div>
                             <div class="p-4 bg-slate-50/50 rounded-2xl flex justify-between items-center border border-slate-100">
                                 <span class="text-sm font-bold text-slate-600">فروقات رسوم المرتجعات</span>
-                                <span class="text-rose-500 font-bold">4,400 ر.س</span>
+                                <span class="text-rose-500 font-bold">4,400 ريال</span>
                             </div>
                         </div>
                     </div>
@@ -172,27 +199,12 @@
         <!-- 2. Trust Bar -->
         <section id="about" class="py-12 bg-white border-b border-[#E2E8F0] font-ui scroll-mt-24">
             <div class="max-w-7xl mx-auto px-6">
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-8 text-center items-center opacity-70">
-                    <div class="space-y-1">
-                        <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Developer Entity</p>
-                        <h4 class="text-sm font-bold text-slate-700">Five Al Durub</h4>
-                    </div>
-                    <div class="space-y-1 md:border-r border-slate-100">
-                        <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Established</p>
-                        <h4 class="text-sm font-bold text-slate-700">Since 2020</h4>
-                    </div>
-                    <div class="space-y-1 md:border-r border-slate-100">
-                        <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Certification</p>
-                        <h4 class="text-sm font-bold text-slate-700">ISO 9001:2015</h4>
-                    </div>
-                    <div class="space-y-1 md:border-r border-slate-100">
-                        <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Accreditation</p>
-                        <h4 class="text-sm font-bold text-slate-700 font-brand">Jadeer Certified</h4>
-                    </div>
-                    <div class="space-y-1 md:border-r border-slate-100">
-                        <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Type</p>
-                        <h4 class="text-sm font-bold text-slate-700">Saudi Technology</h4>
-                    </div>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-8 text-center items-center opacity-70 text-right">
+                    <div class="space-y-1"><p class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Developer Entity</p><h4 class="text-sm font-bold text-slate-700">Five Al Durub</h4></div>
+                    <div class="space-y-1 border-r border-slate-100 pr-4"><p class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Established</p><h4 class="text-sm font-bold text-slate-700">Since 2020</h4></div>
+                    <div class="space-y-1 border-r border-slate-100 pr-4"><p class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Certification</p><h4 class="text-sm font-bold text-slate-700">ISO 9001:2015</h4></div>
+                    <div class="space-y-1 border-r border-slate-100 pr-4"><p class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Accreditation</p><h4 class="text-sm font-bold text-slate-700 font-brand">Jadeer Certified</h4></div>
+                    <div class="space-y-1 border-r border-slate-100 pr-4"><p class="text-[9px] font-black uppercase text-slate-400 tracking-widest">Type</p><h4 class="text-sm font-bold text-slate-700">Saudi Technology</h4></div>
                 </div>
             </div>
         </section>
@@ -201,49 +213,13 @@
         <section id="indicators" class="py-24 bg-slate-50 border-b border-[#E2E8F0] font-ui text-right">
             <div class="max-w-7xl mx-auto px-6 space-y-16">
                 <div class="text-center space-y-4">
-                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center justify-center gap-2">
-                        <i class="fas fa-users text-signal"></i> Trusted by logistics teams and e-commerce operators in Saudi Arabia
-                    </p>
                     <h2 class="text-3xl font-brand font-black text-[#0F172A]">مؤشرات النزاهة اللوجستية</h2>
+                    <p class="text-slate-500 font-medium max-w-2xl mx-auto">نقوم بمعالجة ملايين سجلات بيانات الشحن لاستخراج الحقيقة المالية الكامنة خلف الأرقام.</p>
                 </div>
                 <div class="grid md:grid-cols-3 gap-8 text-center">
-                    <div class="p-8 bg-white rounded-3xl border border-slate-100 shadow-sm">
-                        <h4 class="text-4xl font-black text-rose-600 tracking-tighter">5.4%</h4>
-                        <p class="text-[10px] text-[#64748B] font-bold uppercase tracking-widest mt-2">متوسط فروقات محتملة في عينات البيانات</p>
-                    </div>
-                    <div class="p-8 bg-white rounded-3xl border border-slate-100 shadow-sm">
-                        <h4 class="text-4xl font-black text-[#0F172A] tracking-tighter uppercase font-sans">Big Data</h4>
-                        <p class="text-[10px] text-[#64748B] font-bold uppercase tracking-widest mt-2">مصمم لمعالجة وتحليل ملايين سجلات بيانات الشحن</p>
-                    </div>
-                    <div class="p-8 bg-white rounded-3xl border border-slate-100 shadow-sm">
-                        <h4 class="text-4xl font-black text-blue-600 tracking-tighter">24 ساعة</h4>
-                        <p class="text-[10px] text-[#64748B] font-bold uppercase tracking-widest mt-2">لاستخراج المؤشرات التشغيلية من البيانات</p>
-                    </div>
-                </div>
-
-                <!-- Case Study Box -->
-                <div class="bg-[#0F172A] p-12 rounded-[4rem] relative overflow-hidden text-white shadow-2xl">
-                    <div class="absolute top-0 left-0 p-10 opacity-5">
-                        <i class="fas fa-file-invoice-dollar fa-10x"></i>
-                    </div>
-                    <div class="flex flex-col md:flex-row justify-between items-center gap-10 relative z-10 text-right">
-                        <div class="space-y-6 md:w-1/2">
-                            <div class="inline-block px-4 py-1 rounded-full bg-blue-500/20 text-blue-400 text-[10px] font-bold uppercase tracking-widest">Case Study Highlight</div>
-                            <h3 class="text-4xl font-brand font-black leading-tight">تحليل 3,200 شحنة <br/> لمتجر عطور سعودي</h3>
-                            <p class="text-lg text-slate-400 leading-relaxed font-medium">كشف التدقيق عن تباينات في الوزن الحجمي ورسوم مرتجعات غير دقيقة، مما وفر رؤية لاسترداد مبالغ تجاوزت 12,000 ريال.</p>
-                            <a href="shipping-delays.html" class="text-signal font-bold flex items-center gap-2 hover:translate-x-[-10px] transition-transform">اقرأ التفاصيل الكاملة <i class="fas fa-arrow-left"></i></a>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4 md:w-1/2">
-                            <div class="bg-white/5 p-8 rounded-3xl border border-white/10 text-center backdrop-blur-md">
-                                <div class="text-rose-500 font-brand font-black text-3xl">82 حالة</div>
-                                <p class="text-[9px] text-slate-400 uppercase font-bold mt-2">فروقات وزن حجمي</p>
-                            </div>
-                            <div class="bg-white/5 p-8 rounded-3xl border border-white/10 text-center backdrop-blur-md">
-                                <div class="text-emerald-500 font-brand font-black text-3xl">145 حالة</div>
-                                <p class="text-[9px] text-slate-400 uppercase font-bold mt-2">رسوم مرتجعات زائدة</p>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="p-8 bg-white rounded-3xl border border-slate-100 shadow-sm"><h4 class="text-4xl font-black text-rose-600 tracking-tighter">5.4%</h4><p class="text-[10px] text-[#64748B] font-bold uppercase tracking-widest mt-2">متوسط فروقات محتملة في عينات البيانات</p></div>
+                    <div class="p-8 bg-white rounded-3xl border border-slate-100 shadow-sm"><h4 class="text-4xl font-black text-[#0F172A] tracking-tighter uppercase font-sans">Big Data</h4><p class="text-[10px] text-[#64748B] font-bold uppercase tracking-widest mt-2">مصمم لمعالجة ملايين سجلات بيانات الشحن</p></div>
+                    <div class="p-8 bg-white rounded-3xl border border-slate-100 shadow-sm"><h4 class="text-4xl font-black text-blue-600 tracking-tighter">24 ساعة</h4><p class="text-[10px] text-[#64748B] font-bold uppercase tracking-widest mt-2">لاستخراج المؤشرات التشغيلية من البيانات</p></div>
                 </div>
             </div>
         </section>
@@ -255,18 +231,18 @@
                     <h2 class="text-4xl font-brand font-black text-[#0F172A] tracking-tight">كيف يعمل مفاتيح؟</h2>
                     <p class="text-[#64748B] text-lg max-w-3xl mx-auto leading-relaxed">تعمل مفاتيح كطبقة تحليل بيانات لوجستية مستقلة فوق الأنظمة القائمة لاستخراج المؤشرات التشغيلية وتحسين وضوح بيانات الشحن.</p>
                 </div>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="bg-slate-50 p-12 rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-lg transition-all group text-center border-b-4 border-transparent hover:border-signal">
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-slate-50 p-12 rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-lg transition-all group border-b-4 border-transparent hover:border-signal">
                         <div class="w-16 h-16 bg-white text-signal rounded-2xl flex items-center justify-center mb-8 mx-auto group-hover:scale-110 transition-transform"><i class="fas fa-cloud-upload-alt fa-2x"></i></div>
                         <h4 class="text-xl font-brand font-bold mb-4 text-[#0F172A]">رفع البيانات</h4>
                         <p class="text-sm text-[#64748B] font-medium leading-relaxed">رفع تقارير الشحن أو العمليات اللوجستية بصيغ CSV أو Excel.</p>
                     </div>
-                    <div class="bg-slate-50 p-12 rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-lg transition-all group text-center border-b-4 border-signal">
+                    <div class="bg-slate-50 p-12 rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-lg transition-all group border-b-4 border-signal">
                         <div class="w-16 h-16 bg-white text-signal rounded-2xl flex items-center justify-center mb-8 mx-auto group-hover:scale-110 transition-transform"><i class="fas fa-microchip fa-2x"></i></div>
                         <h4 class="text-xl font-brand font-bold mb-4 text-[#0F172A]">تحليل النزاهة</h4>
-                        <p class="text-sm text-[#64748B] font-medium leading-relaxed">تحليل البيانات باستخدام محرك مفاتيح التحليلي لمطابقة العمليات مع العقود المبرمة.</p>
+                        <p class="text-sm text-[#64748B] font-medium leading-relaxed">تحليل البيانات باستخدام محرك مفاتيح لمطابقة العمليات مع العقود المبرمة.</p>
                     </div>
-                    <div class="bg-slate-50 p-12 rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-lg transition-all group text-center border-b-4 border-transparent hover:border-signal">
+                    <div class="bg-slate-50 p-12 rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-lg transition-all group border-b-4 border-transparent hover:border-signal">
                         <div class="w-16 h-16 bg-white text-signal rounded-2xl flex items-center justify-center mb-8 mx-auto group-hover:scale-110 transition-transform"><i class="fas fa-file-invoice-dollar fa-2x"></i></div>
                         <h4 class="text-xl font-brand font-bold mb-4 text-[#0F172A]">مؤشرات الاسترداد</h4>
                         <p class="text-sm text-[#64748B] font-medium leading-relaxed">استخراج مبالغ الهدر المالي المكتشف وتجهيز ملف المطالبة للناقل.</p>
@@ -275,16 +251,18 @@
             </div>
         </section>
 
-        <!-- 5. Upload Section -->
+        <!-- 5. Upload Section (REFINED WITH TRUST AND RESULTS) -->
         <section id="upload" class="py-24 bg-slate-50 border-t border-[#E2E8F0] font-ui text-right scroll-mt-24">
             <div class="max-w-7xl mx-auto px-6">
-                <div class="text-center space-y-6 mb-16">
-                    <h1 class="text-5xl font-brand font-black text-[#0F172A] tracking-tight">ابدأ مراجعة بيانات الشحن</h1>
-                    <p class="text-xl text-[#64748B] leading-relaxed font-medium max-w-3xl mx-auto">ارفع سجلات البيانات اللوجستية (CSV, Excel)، وسيقوم المحرك باستخراج النتائج خلال 24 ساعة.</p>
+                <div class="text-center space-y-6 mb-12">
+                    <h2 class="text-5xl font-brand font-black text-[#0F172A] tracking-tight">ابدأ مراجعة بيانات الشحن</h2>
+                    <!-- Quick Trust Bar -->
+                    <div class="text-center text-sm font-bold text-slate-600 bg-white/50 inline-block px-6 py-2 rounded-full border border-slate-200">
+                        مراجعة مجانية • ملف Excel أو CSV فقط • بدون التزام
+                    </div>
                 </div>
                 
                 <div class="grid lg:grid-cols-12 gap-10 items-start">
-                    <!-- Left: Upload Area -->
                     <div class="lg:col-span-8">
                         <div class="bg-white border-2 border-dashed border-[#E2E8F0] rounded-[4rem] p-24 flex flex-col items-center justify-center text-center space-y-8 hover:border-signal transition-all cursor-pointer group shadow-sm" onclick="window.open('https://tally.so/r/VLlzYa', '_blank')">
                             <i class="fas fa-cloud-upload-alt text-signal fa-5x group-hover:scale-110 transition-transform duration-500"></i>
@@ -292,37 +270,30 @@
                                 <h4 class="text-3xl font-brand font-bold text-[#0F172A]">اسحب ملف البيانات هنا لرفعه</h4>
                                 <p class="text-slate-400 font-ui font-medium">نقبل صيغ CSV و Excel (بحد أقصى 10MB)</p>
                                 <p class="text-emerald-600 font-bold text-sm bg-emerald-50 inline-block px-4 py-1 rounded-full">نراجع البيانات مجاناً لأول 50 متجر.</p>
-                                <p class="text-slate-400 font-bold uppercase tracking-widest text-[10px] pt-4 font-sans border-t border-slate-50 mt-4">معالجة آمنة ومشفرة للبيانات | Secure Data Handling</p>
                             </div>
                         </div>
-
-                        <!-- Data Sample Preview -->
-                        <div class="mt-8 bg-white p-10 rounded-[3rem] border border-[#E2E8F0] shadow-sm">
-                            <div class="flex justify-between items-center mb-6">
-                                <h4 class="text-lg font-bold text-[#0F172A] flex items-center gap-2 font-brand"><i class="fas fa-database text-signal"></i> عينة البيانات المطلوبة</h4>
-                                <a href="sample.csv" download class="text-xs font-bold text-signal hover:underline">تحميل نموذج CSV</a>
+                        
+                        <!-- What happens after upload -->
+                        <div class="mt-8 grid md:grid-cols-2 gap-4">
+                            <div class="bg-white p-6 rounded-3xl border border-slate-200 flex items-center gap-4">
+                                <div class="w-10 h-10 bg-blue-50 text-signal rounded-full flex items-center justify-center shrink-0"><i class="fas fa-check"></i></div>
+                                <p class="text-sm font-bold text-slate-700">ستحصل على مؤشرات الشحنات المتأخرة</p>
                             </div>
-                            <div class="overflow-x-auto bg-slate-50 rounded-2xl border border-slate-100 p-4 no-scrollbar">
-                                <table class="w-full text-[10px] font-sans text-slate-500 text-right">
-                                    <thead>
-                                        <tr class="border-b border-slate-200">
-                                            <th class="pb-2">Tracking Number</th>
-                                            <th class="pb-2">Carrier</th>
-                                            <th class="pb-2">Ship Date</th>
-                                            <th class="pb-2">Cost</th>
-                                            <th class="pb-2">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr><td class="pt-2">3138291290</td><td class="pt-2">Aramex</td><td class="pt-2">2026-02-15</td><td class="pt-2">34.00</td><td class="pt-2">Delivered</td></tr>
-                                        <tr><td class="pt-2">8729192110</td><td class="pt-2">SMSA</td><td class="pt-2">2026-02-16</td><td class="pt-2">12.50</td><td class="pt-2">Returned</td></tr>
-                                    </tbody>
-                                </table>
+                            <div class="bg-white p-6 rounded-3xl border border-slate-200 flex items-center gap-4">
+                                <div class="w-10 h-10 bg-blue-50 text-signal rounded-full flex items-center justify-center shrink-0"><i class="fas fa-check"></i></div>
+                                <p class="text-sm font-bold text-slate-700">ستعرف تكلفتك المرتجعة المستردة</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-3xl border border-slate-200 flex items-center gap-4">
+                                <div class="w-10 h-10 bg-blue-50 text-signal rounded-full flex items-center justify-center shrink-0"><i class="fas fa-check"></i></div>
+                                <p class="text-sm font-bold text-slate-700">سنكشف لك فرص تقليل تكلفة الشحن</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-3xl border border-slate-200 flex items-center gap-4">
+                                <div class="w-10 h-10 bg-blue-50 text-signal rounded-full flex items-center justify-center shrink-0"><i class="fas fa-check"></i></div>
+                                <p class="text-sm font-bold text-slate-700">ستحصل على جدول المطالبات الجاهز</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Right: Security & FAQ -->
                     <div class="lg:col-span-4 space-y-6">
                         <div class="bg-white p-10 rounded-[3rem] border border-slate-200 shadow-sm space-y-8">
                             <h4 class="text-xl font-brand font-bold text-[#0F172A] border-b border-slate-50 pb-4 flex items-center gap-2 justify-end text-right font-brand">
@@ -330,7 +301,7 @@
                             </h4>
                             <ul class="space-y-6 text-sm font-medium text-slate-600">
                                 <li class="flex items-start gap-3 justify-end leading-relaxed text-right">
-                                    <p>تُعالج البيانات بسرية تامة؛ لا نحتاج لأسماء العملاء أو أرقام هواتفهم.</p>
+                                    <p>لا نحتاج أسماء العملاء أو أرقامهم — يكفي ملف الشحن فقط</p>
                                     <i class="fas fa-check text-signal mt-1"></i>
                                 </li>
                                 <li class="flex items-start gap-3 justify-end leading-relaxed text-right">
@@ -345,7 +316,7 @@
                         </div>
                         <a href="https://tally.so/r/VLlzYa" target="_blank" rel="noopener noreferrer" class="bg-[#0F172A] p-10 rounded-[3rem] border border-white/10 flex flex-col items-center justify-center text-center hover:bg-slate-900 transition group shadow-xl text-white">
                             <i class="fas fa-comment-dots text-signal fa-3x mb-4 group-hover:scale-110 transition"></i>
-                            <h4 class="font-brand font-bold text-lg">تحتاج مساعدة؟</h4>
+                            <h4 class="font-brand font-bold text-lg text-white">تحتاج مساعدة؟</h4>
                             <p class="text-xs text-slate-400 font-medium font-ui mt-2">تحدث مع فريق مفاتيح عبر واتساب</p>
                         </a>
                     </div>
@@ -362,11 +333,11 @@
                     <div class="flex items-center gap-4 justify-end lg:justify-start lg:flex-row-reverse">
                         <span class="text-3xl font-brand font-black tracking-tight">مفاتيح</span>
                         <svg width="45" height="45" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="90" cy="100" r="80" stroke="#FFFFFF" stroke-width="20" />
+                            <circle cx="90" cy="100" r="80" stroke="#FFFFFF" strokeWidth="20" />
                             <rect x="65" y="110" width="12" height="30" rx="2" fill="#0EA5E9" />
                             <rect x="84" y="90" width="12" height="50" rx="2" fill="#0EA5E9" />
                             <rect x="103" y="70" width="12" height="70" rx="2" fill="#38BDF8" />
-                            <path d="M170 100H230M210 100V135M230 100V125" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round" />
+                            <path d="M170 100H230M210 100V135M230 100V125" stroke="#FFFFFF" strokeWidth="18" strokeLinecap="round" />
                         </svg>
                     </div>
                     <p class="text-slate-400 max-w-sm leading-relaxed font-medium">
@@ -374,24 +345,16 @@
                     </p>
                 </div>
                 <div>
-                    <h5 class="font-bold mb-6 text-white uppercase tracking-widest text-[10px] font-sans">Resources</h5>
-                    <ul class="space-y-4 text-xs text-slate-500 font-bold">
-                        <li><a href="articles.html" class="hover:text-signal transition">الرؤى والتدقيق</a></li>
-                        <li><a href="guide.html" class="hover:text-signal transition">دليل استخراج البيانات</a></li>
-                        <li><a href="#how-it-works" class="hover:text-signal transition">منهجية التدقيق</a></li>
-                    </ul>
-                </div>
-                <div>
                     <h5 class="font-bold mb-6 text-white uppercase tracking-widest text-[10px] font-sans">Ownership & Trust</h5>
                     <div class="space-y-4">
-                        <div class="p-3 bg-white/5 rounded-xl border border-white/10">
+                        <div class="p-3 bg-white/5 rounded-xl border border-white/10 text-right">
                             <p class="text-[10px] text-slate-500 font-bold uppercase font-sans">Owned By</p>
-                            <p class="text-sm font-bold text-white tracking-tight">Five Al Durub</p>
+                            <p class="text-sm font-bold text-white tracking-tight text-right">Five Al Durub</p>
                         </div>
-                        <ul class="space-y-2 text-[10px] text-slate-500 font-bold uppercase">
-                            <li><i class="fas fa-certificate text-signal ml-1"></i> ISO 9001:2015</li>
-                            <li><i class="fas fa-check-circle text-signal ml-1"></i> Accredited by Jadeer</li>
-                            <li><i class="fas fa-calendar-alt text-signal ml-1"></i> Since 2020</li>
+                        <ul class="space-y-2 text-[10px] text-slate-500 font-bold uppercase text-right">
+                            <li>ISO 9001:2015 <i class="fas fa-certificate text-signal mr-1"></i></li>
+                            <li>Accredited by Jadeer <i class="fas fa-check-circle text-signal mr-1"></i></li>
+                            <li>Since 2020 <i class="fas fa-calendar-alt text-signal mr-1"></i></li>
                         </ul>
                     </div>
                 </div>
@@ -402,6 +365,44 @@
             </div>
         </div>
     </footer>
+
+    <!-- Scripts -->
+    <script>
+        // 1. Dynamic Banner Logic
+        const messages = [
+            "📦 هل تعلم أن بعض شحناتك قد تستحق تعويضاً من شركة الشحن؟",
+            "💰 كثير من المتاجر تفقد تعويضات شحن دون أن تعلم.",
+            "📊 مفاتيح يحلل بيانات الشحن ويكشف الفروقات.",
+            "🚀 ارفع ملف الشحن واحصل على مراجعة مجانية."
+        ];
+
+        let messageIndex = 0;
+        const bannerElement = document.getElementById("banner-text");
+
+        function updateBanner() {
+            bannerElement.style.opacity = 0; // Fade Out
+            setTimeout(() => {
+                messageIndex = (messageIndex + 1) % messages.length;
+                bannerElement.textContent = messages[messageIndex];
+                bannerElement.style.opacity = 1; // Fade In
+            }, 500);
+        }
+
+        setInterval(updateBanner, 4000); // 4 seconds interval
+
+        // 2. Dynamic Header Position based on Banner height
+        const adjustHeader = () => {
+            const banner = document.getElementById('mf-banner');
+            const header = document.getElementById('main-header');
+            if (banner && header) {
+                const bannerHeight = banner.offsetHeight;
+                header.style.top = bannerHeight + 'px';
+            }
+        };
+
+        window.addEventListener('load', adjustHeader);
+        window.addEventListener('resize', adjustHeader);
+    </script>
 
 </body>
 </html>
