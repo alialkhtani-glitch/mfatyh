@@ -525,6 +525,33 @@
                 let total = 0, delivered = 0, returned = 0, delayed = 0, estimatedLoss = 0;
                 const regionCounter = {};
 
+                // --- Hybrid Patterns for improved flexibility and precision ---
+                const confirmedSuccessPatterns = [
+                    "delivered", 
+                    "delivered_to_customer", 
+                    "shipment_delivered", 
+                    "order_delivered", 
+                    "package delivered", 
+                    "تم التسليم", 
+                    "مستلم", 
+                    "مستلمة", 
+                    "تم التوصيل",
+                    "وصلت"
+                ];
+
+                const negativeDeliveryPatterns = [
+                    "undelivered",
+                    "not_delivered",
+                    "delivery_failed",
+                    "failed_delivery",
+                    "failed_to_deliver",
+                    "customer_not_available",
+                    "delivery_unsuccessful",
+                    "لم يتم التسليم",
+                    "فشل التسليم",
+                    "تعذر التسليم"
+                ];
+
                 for (let i = 1; i < rawLines.length; i++) {
                     const cols = parseCSVLine(rawLines[i]);
                     if (!cols.length || cols.length <= statusIdx) continue;
@@ -536,21 +563,21 @@
                     const cost = costIdx !== -1 ? parseFloat(String(cols[costIdx] || "").replace(/[^\d.-]/g, "")) : NaN;
 
                     let isReturned = false;
-                let isDelayed = false;
+                    let isDelayed = false;
 
-                if (
-                    status === "delivered" ||
-                    status === "delivered_to_customer" ||
-                    status.includes("تم التسليم") ||
-                    status === "مستلم" ||
-                    status === "مستلمة"
-                ) {
-                    delivered++;
-                }
-                
-                if (
-                    status.includes("return") ||
-                    status.includes("returned") ||
+                    // Refined Hybrid Logic: Targeted Negative Exclusion
+                    const isNegativeDelivery = negativeDeliveryPatterns.some(p => status === p || status.includes(p));
+                    const isSuccessMatch = !isNegativeDelivery && confirmedSuccessPatterns.some(
+                        p => status === p || status.includes(p)
+                    );
+
+                    if (isSuccessMatch) {
+                        delivered++;
+                    }
+                    
+                    if (
+                        status.includes("return") ||
+                        status.includes("returned") ||
                         status.includes("cancel") ||
                         status.includes("cancelled") ||
                         status.includes("رفض") ||
