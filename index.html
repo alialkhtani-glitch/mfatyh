@@ -386,8 +386,16 @@
         </section>
     </main>
 
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <!-- JS Logic (Advanced Parser Engine) -->
     <script>
+        // --- Supabase Initialization ---
+        const supabaseUrl = "https://mlynsakcudkmnvrgmsih.supabase.co";
+        const supabaseKey = "sb_publishable_3tUgE5Yd6UEUNBO2JARvag_6HQMz3-Q";
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
         const uploadInput = document.getElementById("upload");
         const analyzeBtn = document.getElementById("analyzeBtn");
         const statusBox = document.getElementById("statusBox");
@@ -623,9 +631,10 @@
             }
         });
 
-        // Form Submit (Enhanced Validation & Success State)
-        document.getElementById("emailForm").addEventListener("submit", function(e) {
+        // Form Submit (Supabase Integration)
+        document.getElementById("emailForm").addEventListener("submit", async function(e) {
             e.preventDefault();
+
             const input = document.getElementById("emailInput");
             const email = input.value.trim();
 
@@ -634,13 +643,28 @@
                 return;
             }
 
-            const btn = this.querySelector('button');
+            const btn = this.querySelector("button");
+            btn.disabled = true;
+            btn.innerHTML = `<span class="spinner"></span> جاري الإرسال...`;
+
+            // إرسال البيانات إلى Supabase
+            const { error } = await supabase
+                .from("leads")
+                .insert([{ email }]);
+
+            if (error) {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> أرسل التقرير`;
+                showStatus("حدث خطأ أثناء حفظ البريد. تأكد من إعدادات الجدول أو الصلاحيات.", "error");
+                console.error("Supabase Error:", error);
+                return;
+            }
+
             btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> تم استلام الطلب`;
             btn.style.background = "var(--success)";
             btn.style.color = "#fff";
             input.disabled = true;
-            btn.disabled = true;
-            showStatus(`تم استلام البريد: ${email}، سيتم التواصل معك قريباً.`, "success");
+            showStatus(`تم استلام البريد: ${email}، وسيتم التواصل معك قريبًا.`, "success");
         });
     </script>
 </body>
