@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- تم إعادة إضافة خط Cairo كخط بديل (Fallback) لحماية الهوية في حال فشل تحميل الخط المحلي -->
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Urbanist:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
@@ -648,9 +648,11 @@
 
             const input = document.getElementById("emailInput");
             const email = input.value.trim();
-
-            if (!email || !email.includes("@") || !email.includes(".")) {
-                showStatus("يرجى إدخال بريد إلكتروني صحيح.", "error");
+            
+            // تحقق صارم باستخدام التعبيرات النمطية (Regex)
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showStatus("يرجى إدخال بريد إلكتروني مؤسسي أو شخصي صحيح.", "error");
                 return;
             }
 
