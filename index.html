@@ -8,7 +8,6 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- تم إعادة إضافة خط Cairo كخط بديل (Fallback) لحماية الهوية في حال فشل تحميل الخط المحلي -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Urbanist:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -99,7 +98,7 @@
             border: 0; cursor: pointer; border-radius: 12px;
             padding: 12px 24px; font-weight: 700; transition: 0.3s ease;
             font-family: 'Saudi', 'Cairo', sans-serif; font-size: 1rem;
-            display: inline-flex; align-items: center; gap: 8px;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
         }
 
         .primary-btn {
@@ -146,7 +145,7 @@
         .point span { display: block; color: var(--muted); font-size: 0.8rem; margin-top: 8px; font-weight: 400; line-height: 1.5; }
 
         /* --- Upload Panel --- */
-        .hero-panel { padding: 30px; background: var(--bg-soft); }
+        .hero-panel { padding: 30px; background: var(--bg-soft); display: flex; flex-direction: column; justify-content: center; }
         .panel-head { margin-bottom: 20px; }
         .panel-head h2 { margin: 0 0 8px; font-size: 1.4rem; }
         .panel-head p { color: var(--muted); font-size: 0.9rem; line-height: 1.6; margin: 0;}
@@ -154,17 +153,27 @@
         .dropzone {
             border: 2px dashed rgba(222, 255, 154, 0.3); border-radius: 12px;
             padding: 30px 20px; background: var(--bg); text-align: center;
-            transition: 0.3s ease; cursor: pointer;
+            transition: 0.3s ease; cursor: pointer; position: relative;
         }
         .dropzone.dragover { border-color: var(--brand); background: rgba(222, 255, 154, 0.05); }
+        .dropzone * { pointer-events: none; } /* Fixes drag flicker */
+        .dropzone .file-btn { pointer-events: auto; } /* Keeps button clickable */
+        
         .dropzone-icon { font-size: 2.5rem; color: var(--brand); margin-bottom: 10px; }
         .dropzone h3 { margin: 0 0 8px; font-size: 1.1rem; }
         .dropzone p { color: var(--muted); font-size: 0.85rem; margin-bottom: 20px; }
 
-        .file-btn { position: relative; overflow: hidden; width: 100%; justify-content: center; }
+        .file-btn { position: relative; overflow: hidden; width: 100%; }
         .file-btn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
         
-        #analyzeBtn { width: 100%; justify-content: center; margin-top: 10px;}
+        .selected-file-name {
+            display: none; margin-top: 15px; padding: 10px; border-radius: 8px;
+            background: rgba(222, 255, 154, 0.1); color: var(--brand);
+            font-size: 0.95rem; font-weight: 700; border: 1px solid rgba(222, 255, 154, 0.2);
+            word-break: break-all;
+        }
+
+        #analyzeBtn { width: 100%; margin-top: 15px;}
 
         /* --- Status & Notifications --- */
         .status-box {
@@ -275,10 +284,10 @@
                 <div class="hero-copy">
                     <div class="eyebrow"><span class="dot"></span> تشخيص تشغيلي مبني على البيانات</div>
                     <h1>ارفع ملف الشحن واكتشف <span class="accent">خسائرك التشغيلية</span> خلال ثوانٍ</h1>
-                    <p class="lead">محرك تشخيصي يقرأ بياناتك فورياً ليكشف تأخير التوصيل، نسب المرتجعات، الفجوات التشغيلية، ويقدر حجم الهدر المالي الصامت في عملياتك.</p>
+                    <p class="lead">محرك تشخيصي يقرأ كامل بيانات الشحن فورياً ليكشف تأخير التوصيل، نسب المرتجعات، الفجوات التشغيلية، ويقدر حجم الهدر المالي الصامت في عملياتك.</p>
                     
                     <div class="hero-points">
-                        <div class="point"><i class="fa-solid fa-file-invoice-dollar" style="color: var(--brand);"></i> تحليل أولي مجاني<span>افحص أول 1000 شحنة فوراً لتقييم الوضع.</span></div>
+                        <div class="point"><i class="fa-solid fa-file-invoice-dollar" style="color: var(--brand);"></i> تحليل كامل مجاني<span>افحص جميع شحناتك فوراً واكتشف وضعك التشغيلي بدقة.</span></div>
                         <div class="point"><i class="fa-solid fa-stopwatch" style="color: var(--brand);"></i> نتائج فورية<span>مؤشرات ذكية خلال ثوانٍ من قراءة الملف.</span></div>
                         <div class="point"><i class="fa-solid fa-shield-halved" style="color: var(--brand);"></i> معالجة محلية آمنة<span>البيانات تُعالج بجهازك ولا تُرفع لأي خادم.</span></div>
                     </div>
@@ -300,6 +309,9 @@
                             <i class="fa-solid fa-file-csv"></i> اختيار الملف
                             <input type="file" id="upload" accept=".csv,text/csv" />
                         </label>
+                        
+                        <!-- Visual Feedback for Selected File -->
+                        <div class="selected-file-name" id="selectedFileName"></div>
                     </div>
 
                     <button class="primary-btn" id="analyzeBtn" type="button" disabled>ابدأ التحليل الآن</button>
@@ -326,7 +338,7 @@
             <div class="results-top">
                 <div>
                     <h2 class="section-title">لوحة القيادة التشخيصية</h2>
-                    <p style="color: var(--muted); margin: 0;">نظرة أولية على أداء العمليات اللوجستية بناءً على عينة البيانات المرفوعة.</p>
+                    <p style="color: var(--muted); margin: 0;">نظرة أولية على أداء العمليات اللوجستية بناءً على كامل البيانات المرفوعة.</p>
                 </div>
                 <div class="pill" id="analyzedFileName">...</div>
             </div>
@@ -391,102 +403,147 @@
 
     <!-- JS Logic (Advanced Parser Engine) -->
     <script>
-        // --- Supabase Initialization ---
-        const supabaseUrl = "https://mlynsakcudkmnvrgmsih.supabase.co";
-        const supabaseKey = "sb_publishable_3tUgE5Yd6UEUNBO2JARvag_6HQMz3-Q";
-        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+        (() => {
+            "use strict";
 
-        const uploadInput = document.getElementById("upload");
-        const analyzeBtn = document.getElementById("analyzeBtn");
-        const statusBox = document.getElementById("statusBox");
-        const resultsSection = document.getElementById("resultsSection");
-        const dropzone = document.getElementById("dropzone");
+            // --- Supabase Initialization ---
+            const supabaseUrl = "https://mlynsakcudkmnvrgmsih.supabase.co";
+            const supabaseKey = "sb_publishable_3tUgE5Yd6UEUNBO2JARvag_6HQMz3-Q";
+            const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-        // Stat Elements
-        const totalRecordsEl = document.getElementById("totalRecords");
-        const deliveryRateEl = document.getElementById("deliveryRate");
-        const returnRateEl = document.getElementById("returnRate");
-        const delayRateEl = document.getElementById("delayRate");
-        const estimatedLossEl = document.getElementById("estimatedLoss");
-        const analyzedFileNameEl = document.getElementById("analyzedFileName");
-        const insightListEl = document.getElementById("insightList");
-        const regionListEl = document.getElementById("regionList");
+            const uploadInput = document.getElementById("upload");
+            const analyzeBtn = document.getElementById("analyzeBtn");
+            const statusBox = document.getElementById("statusBox");
+            const resultsSection = document.getElementById("resultsSection");
+            const dropzone = document.getElementById("dropzone");
+            const selectedFileNameEl = document.getElementById("selectedFileName");
 
-        function showStatus(message, type = "success") {
-            statusBox.className = "status-box show " + type;
-            statusBox.innerHTML = message;
-        }
+            // Stat Elements
+            const totalRecordsEl = document.getElementById("totalRecords");
+            const deliveryRateEl = document.getElementById("deliveryRate");
+            const returnRateEl = document.getElementById("returnRate");
+            const delayRateEl = document.getElementById("delayRate");
+            const estimatedLossEl = document.getElementById("estimatedLoss");
+            const analyzedFileNameEl = document.getElementById("analyzedFileName");
+            const insightListEl = document.getElementById("insightList");
+            const regionListEl = document.getElementById("regionList");
 
-        // --- Advanced CSV Parsing Engine ---
-        function normalizeHeader(name) {
-            return String(name || "").trim().toLowerCase().replace(/\s+/g, "_").replace(/[^\w\u0600-\u06FF]/g, "");
-        }
+            // Global State
+            let selectedFile = null;
+            let latestAnalysisMetrics = null; // Store analysis results for Supabase
 
-        function parseCSVLine(line) {
-            const result = [];
-            let current = "", inQuotes = false;
-            for (let i = 0; i < line.length; i++) {
-                const char = line[i], next = line[i + 1];
-                if (char === '"') {
-                    if (inQuotes && next === '"') { current += '"'; i++; } 
-                    else { inQuotes = !inQuotes; }
-                } else if (char === "," && !inQuotes) {
-                    result.push(current); current = "";
-                } else { current += char; }
+            function showStatus(message, type = "success") {
+                statusBox.className = "status-box show " + type;
+                statusBox.innerHTML = message;
             }
-            result.push(current);
-            return result.map(cell => cell.trim());
-        }
 
-        function findHeaderIndex(headers, candidates) {
-            for (const candidate of candidates) {
-                const idx = headers.indexOf(candidate);
-                if (idx !== -1) return idx;
+            // --- State Management: Reset UI ---
+            function resetState() {
+                resultsSection.classList.remove("show");
+                latestAnalysisMetrics = null;
+                selectedFile = null;
+                statusBox.className = "status-box";
+                selectedFileNameEl.style.display = "none";
+                selectedFileNameEl.innerHTML = "";
+                uploadInput.value = ""; // Fixes same-file selection bug
+                
+                // Visual Dashboard Reset (UX Improvement)
+                totalRecordsEl.textContent = "0";
+                deliveryRateEl.textContent = "0%";
+                returnRateEl.textContent = "0%";
+                delayRateEl.textContent = "0%";
+                estimatedLossEl.textContent = "0 ر.س";
+                analyzedFileNameEl.innerHTML = "...";
+                insightListEl.innerHTML = "";
+                regionListEl.innerHTML = "";
+                
+                // Reset Email Form
+                const emailInput = document.getElementById("emailInput");
+                const emailBtn = document.querySelector("#emailForm button");
+                emailInput.value = "";
+                emailInput.disabled = false;
+                emailBtn.disabled = false;
+                emailBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> أرسل التقرير`;
+                emailBtn.style.background = "var(--brand)";
+                emailBtn.style.color = "#000";
+                
+                // Reset Analyze Button
+                analyzeBtn.innerHTML = `ابدأ التحليل الآن`;
             }
-            return -1;
-        }
 
-        function analyzeCSV(text, fileName) {
-            // Clean BOM character and empty lines
-            const cleanText = text.replace(/^\uFEFF/, "");
-            const rawLines = cleanText.replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n").map(l => l.trim()).filter(l => l.length > 0);
-            if (rawLines.length < 2) throw new Error("الملف لا يحتوي على بيانات كافية للتحليل.");
+            // --- Advanced CSV Parsing Engine ---
+            function normalizeHeader(name) {
+                return String(name || "").trim().toLowerCase().replace(/\s+/g, "_").replace(/[^\w\u0600-\u06FF]/g, "");
+            }
 
-            const headers = parseCSVLine(rawLines[0]).map(normalizeHeader);
+            function parseCSVLine(line) {
+                const result = [];
+                let current = "", inQuotes = false;
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i], next = line[i + 1];
+                    if (char === '"') {
+                        if (inQuotes && next === '"') { current += '"'; i++; } 
+                        else { inQuotes = !inQuotes; }
+                    } else if (char === "," && !inQuotes) {
+                        result.push(current); current = "";
+                    } else { current += char; }
+                }
+                result.push(current);
+                return result.map(cell => cell.trim());
+            }
 
-            // Dynamic Column Mapping
-            const statusIdx = findHeaderIndex(headers, ["status", "shipment_status", "state", "الحالة"]);
-            const delayIdx = findHeaderIndex(headers, ["delay_days", "delay", "late_days", "مدة_التأخير"]);
-            const regionIdx = findHeaderIndex(headers, ["region", "city", "المنطقة", "المدينة"]);
-            const costIdx = findHeaderIndex(headers, ["cost", "shipping_cost", "amount", "التكلفة"]);
+            function findHeaderIndex(headers, candidates) {
+                for (const candidate of candidates) {
+                    const idx = headers.indexOf(candidate);
+                    if (idx !== -1) return idx;
+                }
+                return -1;
+            }
 
-            if (statusIdx === -1) throw new Error("لم أتمكن من العثور على عمود الحالة (Status) في الملف.");
+            function analyzeCSV(text, fileName) {
+                const cleanText = text.replace(/^\uFEFF/, "");
+                const rawLines = cleanText.replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n").map(l => l.trim()).filter(l => l.length > 0);
+                
+                // --- Edge Case Protection for Large Files (Data Monopoly Strategy) ---
+                if (rawLines.length > 100000) {
+                    showStatus("الملف ضخم جداً، وسيتم تحليل كامل البيانات لكن قد تلاحظ بطئاً مؤقتاً أثناء المعالجة.", "success");
+                } else if (rawLines.length > 50000) {
+                    showStatus("الملف كبير جداً، قد يستغرق التحليل بعض الوقت حسب قوة الجهاز والمتصفح.", "success");
+                }
 
-            let total = 0, delivered = 0, returned = 0, delayed = 0, estimatedLoss = 0;
-            const regionCounter = {};
+                if (rawLines.length < 2) throw new Error("الملف لا يحتوي على بيانات كافية للتحليل.");
 
-            for (let i = 1; i < rawLines.length; i++) {
-                const cols = parseCSVLine(rawLines[i]);
-                // Fixed column bounds logic
-                if (!cols.length || cols.length <= statusIdx) continue;
-                total++;
+                const headers = parseCSVLine(rawLines[0]).map(normalizeHeader);
 
-                const status = String(cols[statusIdx] || "").trim().toLowerCase();
-                const delayValue = delayIdx !== -1 ? parseFloat(cols[delayIdx]) : 0;
-                const region = regionIdx !== -1 ? String(cols[regionIdx] || "").trim() : "";
-                const cost = costIdx !== -1 ? parseFloat(String(cols[costIdx] || "").replace(/[^\d.-]/g, "")) : NaN;
+                const statusIdx = findHeaderIndex(headers, ["status", "shipment_status", "state", "الحالة"]);
+                const delayIdx = findHeaderIndex(headers, ["delay_days", "delay", "late_days", "مدة_التأخير"]);
+                const regionIdx = findHeaderIndex(headers, ["region", "city", "المنطقة", "المدينة"]);
+                const costIdx = findHeaderIndex(headers, ["cost", "shipping_cost", "amount", "التكلفة"]);
 
-                let isReturned = false;
+                if (statusIdx === -1) throw new Error("لم أتمكن من العثور على عمود الحالة (Status) في الملف.");
+
+                let total = 0, delivered = 0, returned = 0, delayed = 0, estimatedLoss = 0;
+                const regionCounter = {};
+
+                for (let i = 1; i < rawLines.length; i++) {
+                    const cols = parseCSVLine(rawLines[i]);
+                    if (!cols.length || cols.length <= statusIdx) continue;
+                    total++;
+
+                    const status = String(cols[statusIdx] || "").trim().toLowerCase();
+                    const delayValue = delayIdx !== -1 ? parseFloat(cols[delayIdx]) : 0;
+                    const region = regionIdx !== -1 ? String(cols[regionIdx] || "").trim() : "";
+                    const cost = costIdx !== -1 ? parseFloat(String(cols[costIdx] || "").replace(/[^\d.-]/g, "")) : NaN;
+
+                    let isReturned = false;
                 let isDelayed = false;
 
-                // Status logic mapping (Expanded)
                 if (
-                    status.includes("deliver") ||
-                    status.includes("delivered") ||
-                    status.includes("delivered_to_customer") ||
+                    status === "delivered" ||
+                    status === "delivered_to_customer" ||
                     status.includes("تم التسليم") ||
-                    status.includes("مستلم") ||
-                    status.includes("مستلمة")
+                    status === "مستلم" ||
+                    status === "مستلمة"
                 ) {
                     delivered++;
                 }
@@ -494,191 +551,227 @@
                 if (
                     status.includes("return") ||
                     status.includes("returned") ||
-                    status.includes("cancel") ||
-                    status.includes("cancelled") ||
-                    status.includes("رفض") ||
-                    status.includes("مرتجع") ||
-                    status.includes("ملغي")
-                ) {
-                    returned++;
-                    isReturned = true;
-                    estimatedLoss += (Number.isFinite(cost) && cost > 0) ? cost : 25; // Default 25 SAR if no cost provided
-                }
-
-                if (Number.isFinite(delayValue) && delayValue > 3) {
-                    delayed++;
-                    isDelayed = true;
-                }
-                
-                // حساب المناطق بناءً على التعثر (مرتجع أو متأخر) فقط لدقة التشخيص
-                if (region && (isReturned || isDelayed)) {
-                    regionCounter[region] = (regionCounter[region] || 0) + 1;
-                }
-            }
-
-            const deliveryRate = total ? (delivered / total) * 100 : 0;
-            const returnRate = total ? (returned / total) * 100 : 0;
-            const delayRate = total ? (delayed / total) * 100 : 0;
-            const sortedRegions = Object.entries(regionCounter).sort((a, b) => b[1] - a[1]).slice(0, 3);
-
-            // Generate Smart Insights
-            const insights = [];
-            insights.push(deliveryRate < 80 ? 
-                `تنبيه: نسبة التسليم (${deliveryRate.toFixed(1)}%) تعتبر أقل من المعيار المقبول. يجب مراجعة أداء شركات التوصيل المخصصة.` : 
-                `مؤشر صحي: معدل التوصيل الناجح ممتاز ويتماشى مع معايير التجارة الإلكترونية.`);
-            
-            insights.push(returnRate > 10 ? 
-                `خطر تشغيلي: المرتجعات تشكل (${returnRate.toFixed(1)}%). هذا يستنزف الموارد التشغيلية ويستوجب تدقيقاً بأسباب الإرجاع.` : 
-                `استقرار: معدل المرتجعات يقع ضمن النطاق الآمن المعتاد.`);
-            
-            if(delayRate > 0) insights.push(`تم رصد تأخير في التوصيل لـ (${delayRate.toFixed(1)}%) من الشحنات متجاوزة الـ 3 أيام.`);
-
-            return { 
-                fileName, 
-                total, 
-                deliveryRate, 
-                returnRate, 
-                delayRate, 
-                estimatedLoss, 
-                sortedRegions, 
-                insights,
-                hasRegionColumn: regionIdx !== -1 // New parameter for accurate region UI
-            };
-        }
-
-        // --- UI Updates ---
-        function renderResults(data) {
-            totalRecordsEl.textContent = data.total.toLocaleString("ar-SA");
-            deliveryRateEl.textContent = data.deliveryRate.toFixed(1) + "%";
-            returnRateEl.textContent = data.returnRate.toFixed(1) + "%";
-            delayRateEl.textContent = data.delayRate.toFixed(1) + "%";
-            estimatedLossEl.textContent = Math.round(data.estimatedLoss).toLocaleString("ar-SA") + " ر.س";
-            analyzedFileNameEl.innerHTML = `<i class="fa-solid fa-file-csv"></i> ${data.fileName}`;
-
-            insightListEl.innerHTML = data.insights.map(item => `<li>${item}</li>`).join("");
-
-            // Updated Region Logic utilizing hasRegionColumn
-            if (data.sortedRegions.length) {
-                regionListEl.innerHTML = data.sortedRegions.map(([reg, count], i) => `<li><strong>#${i+1} ${reg}</strong> <br><span style="color:var(--muted); font-size:0.85rem;">${count} شحنة متعثرة (تأخير أو إرجاع)</span></li>`).join("");
-            } else if (!data.hasRegionColumn) {
-                regionListEl.innerHTML = `<li><span style="color:var(--muted)">لا يوجد عمود منطقة/مدينة واضح داخل الملف الحالي.</span></li>`;
-            } else {
-                regionListEl.innerHTML = `<li><span style="color:var(--muted)">ممتاز، لا توجد حالات تعثر جغرافية بارزة في العينة الحالية.</span></li>`;
-            }
-
-            resultsSection.classList.add("show");
-            resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-
-        // --- Event Listeners ---
-        function handleFileSelection(file) {
-            if (!file) return;
-
-            resultsSection.classList.remove("show"); // Reset results view
-
-            const fileType = file.type || "";
-            const isCsv = file.name.toLowerCase().endsWith('.csv') || fileType.includes('csv') || fileType === 'text/plain';
-            if (!isCsv) {
-                showStatus("عذراً، يرجى رفع ملف CSV صالح فقط.", "error");
-                analyzeBtn.disabled = true;
-                return;
-            }
-
-            showStatus(`تم اختيار الملف: ${file.name}`, "success");
-            analyzeBtn.disabled = false;
-        }
-
-        uploadInput.addEventListener("change", function() {
-            handleFileSelection(uploadInput.files[0]);
-        });
-
-        analyzeBtn.addEventListener("click", function() {
-            const file = uploadInput.files[0];
-            if (!file) return;
-
-            analyzeBtn.disabled = true;
-            analyzeBtn.innerHTML = `<span class="spinner"></span> جاري المعالجة...`;
-            statusBox.className = "status-box"; // Hide status
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                setTimeout(() => { // UX delay
-                    try {
-                        const analysis = analyzeCSV(e.target.result, file.name);
-                        renderResults(analysis);
-                        analyzeBtn.innerHTML = `<i class="fa-solid fa-rotate-right"></i> تحليل ملف آخر`;
-                        analyzeBtn.disabled = false;
-                    } catch (error) {
-                        showStatus(error.message, "error");
-                        analyzeBtn.innerHTML = `ابدأ التحليل الآن`;
-                        analyzeBtn.disabled = false;
+                        status.includes("cancel") ||
+                        status.includes("cancelled") ||
+                        status.includes("رفض") ||
+                        status.includes("مرتجع") ||
+                        status.includes("ملغي")
+                    ) {
+                        returned++;
+                        isReturned = true;
+                        estimatedLoss += (Number.isFinite(cost) && cost > 0) ? cost : 25;
                     }
-                }, 800);
-            };
-            reader.readAsText(file, "UTF-8");
-        });
 
-        // Drag & Drop
-        ["dragenter", "dragover", "dragleave", "drop"].forEach(evt => {
-            document.addEventListener(evt, function(e) {
-                e.preventDefault();
-                e.stopPropagation();
+                    if (Number.isFinite(delayValue) && delayValue > 3) {
+                        delayed++;
+                        isDelayed = true;
+                    }
+                    
+                    if (region && (isReturned || isDelayed)) {
+                        regionCounter[region] = (regionCounter[region] || 0) + 1;
+                    }
+                }
+
+                const deliveryRate = total ? (delivered / total) * 100 : 0;
+                const returnRate = total ? (returned / total) * 100 : 0;
+                const delayRate = total ? (delayed / total) * 100 : 0;
+                const sortedRegions = Object.entries(regionCounter).sort((a, b) => b[1] - a[1]).slice(0, 3);
+
+                const insights = [];
+                insights.push(deliveryRate < 80 ? 
+                    `تنبيه: نسبة التسليم (${deliveryRate.toFixed(1)}%) تعتبر أقل من المعيار المقبول. يجب مراجعة أداء شركات التوصيل المخصصة.` : 
+                    `مؤشر صحي: معدل التوصيل الناجح ممتاز ويتماشى مع معايير التجارة الإلكترونية.`);
+                
+                insights.push(returnRate > 10 ? 
+                    `خطر تشغيلي: المرتجعات تشكل (${returnRate.toFixed(1)}%). هذا يستنزف الموارد التشغيلية ويستوجب تدقيقاً بأسباب الإرجاع.` : 
+                    `استقرار: معدل المرتجعات يقع ضمن النطاق الآمن المعتاد.`);
+                
+                if(delayRate > 0) insights.push(`تم رصد تأخير في التوصيل لـ (${delayRate.toFixed(1)}%) من الشحنات متجاوزة الـ 3 أيام.`);
+
+                return { 
+                    fileName, total, deliveryRate, returnRate, delayRate, estimatedLoss, sortedRegions, insights,
+                    hasRegionColumn: regionIdx !== -1
+                };
+            }
+
+            // --- UI Updates ---
+            function renderResults(data) {
+                totalRecordsEl.textContent = data.total.toLocaleString("ar-SA");
+                deliveryRateEl.textContent = data.deliveryRate.toFixed(1) + "%";
+                returnRateEl.textContent = data.returnRate.toFixed(1) + "%";
+                delayRateEl.textContent = data.delayRate.toFixed(1) + "%";
+                estimatedLossEl.textContent = Math.round(data.estimatedLoss).toLocaleString("ar-SA") + " ر.س";
+                analyzedFileNameEl.innerHTML = `<i class="fa-solid fa-file-csv"></i> ${data.fileName}`;
+
+                insightListEl.innerHTML = data.insights.map(item => `<li>${item}</li>`).join("");
+
+                if (data.sortedRegions.length) {
+                    regionListEl.innerHTML = data.sortedRegions.map(([reg, count], i) => `<li><strong>#${i+1} ${reg}</strong> <br><span style="color:var(--muted); font-size:0.85rem;">${count} شحنة متعثرة (تأخير أو إرجاع)</span></li>`).join("");
+                } else if (!data.hasRegionColumn) {
+                    regionListEl.innerHTML = `<li><span style="color:var(--muted)">لا يوجد عمود منطقة/مدينة واضح داخل الملف الحالي.</span></li>`;
+                } else {
+                    regionListEl.innerHTML = `<li><span style="color:var(--muted)">ممتاز، لا توجد حالات تعثر جغرافية بارزة في العينة الحالية.</span></li>`;
+                }
+
+                resultsSection.classList.add("show");
+                resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+
+            // --- Event Listeners ---
+            function handleFileSelection(file) {
+                if (!file) return;
+
+                resetState(); // Clean slate on new file
+
+                const fileType = file.type || "";
+                const isCsv = file.name.toLowerCase().endsWith(".csv") || fileType.includes("csv") || fileType === "text/plain";
+
+                if (!isCsv) {
+                    selectedFile = null;
+                    selectedFileNameEl.style.display = "none";
+                    showStatus("عذراً، يرجى رفع ملف CSV صالح فقط.", "error");
+                    analyzeBtn.disabled = true;
+                    return;
+                }
+
+                selectedFile = file;
+                
+                // Visual File Feedback
+                selectedFileNameEl.innerHTML = `<i class="fa-solid fa-file-circle-check"></i> تم اختيار: ${file.name}`;
+                selectedFileNameEl.style.display = "block";
+                
+                // Proactive Expectation Management for Large Files
+                const fileSizeMB = file.size / (1024 * 1024);
+                if (fileSizeMB > 10) {
+                    showStatus(`تم تحميل الملف مؤقتاً بالمتصفح. حجم الملف كبير (${fileSizeMB.toFixed(1)} MB) وقد يستغرق التحليل بعض الوقت.`, "success");
+                } else {
+                    showStatus(`تم تحميل الملف مؤقتاً بالمتصفح. سيتم تحليل كامل الملف عند الضغط على (ابدأ التحليل).`, "success");
+                }
+
+                analyzeBtn.disabled = false;
+            }
+
+            uploadInput.addEventListener("change", function () {
+                handleFileSelection(this.files[0]);
             });
-        });
 
-        ["dragenter", "dragover"].forEach(evt => {
-            dropzone.addEventListener(evt, () => dropzone.classList.add("dragover"));
-        });
+            analyzeBtn.addEventListener("click", function () {
+                const file = selectedFile;
+                if (!file) {
+                    showStatus("يرجى اختيار ملف CSV أولاً.", "error");
+                    return;
+                }
 
-        ["dragleave", "drop"].forEach(evt => {
-            dropzone.addEventListener(evt, () => dropzone.classList.remove("dragover"));
-        });
-        
-        dropzone.addEventListener("drop", e => {
-            const file = e.dataTransfer.files[0];
-            if (file) {
-                uploadInput.files = e.dataTransfer.files; // Sync with input
-                handleFileSelection(file);
-            }
-        });
+                analyzeBtn.disabled = true;
+                analyzeBtn.innerHTML = `<span class="spinner"></span> جاري المعالجة...`;
+                statusBox.className = "status-box";
 
-        // Form Submit (Supabase Integration)
-        document.getElementById("emailForm").addEventListener("submit", async function(e) {
-            e.preventDefault();
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    setTimeout(() => {
+                        try {
+                            const analysis = analyzeCSV(e.target.result, file.name);
+                            latestAnalysisMetrics = analysis; // Cache for Supabase
+                            renderResults(analysis);
+                            analyzeBtn.innerHTML = `<i class="fa-solid fa-rotate-right"></i> تحليل ملف آخر`;
+                            analyzeBtn.disabled = false;
+                        } catch (error) {
+                            showStatus(error.message, "error");
+                            analyzeBtn.innerHTML = `ابدأ التحليل الآن`;
+                            analyzeBtn.disabled = false;
+                        }
+                    }, 800);
+                };
+                
+                reader.onerror = function () {
+                    showStatus("حدث خطأ أثناء قراءة الملف.", "error");
+                    analyzeBtn.innerHTML = `ابدأ التحليل الآن`;
+                    analyzeBtn.disabled = false;
+                };
 
-            const input = document.getElementById("emailInput");
-            const email = input.value.trim();
-            
-            // تحقق صارم باستخدام التعبيرات النمطية (Regex)
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                showStatus("يرجى إدخال بريد إلكتروني مؤسسي أو شخصي صحيح.", "error");
-                return;
-            }
+                reader.readAsText(file, "UTF-8");
+            });
 
-            const btn = this.querySelector("button");
-            btn.disabled = true;
-            btn.innerHTML = `<span class="spinner"></span> جاري الإرسال...`;
+            // Safe Drag & Drop (Window & Document Level capture)
+            ["dragenter", "dragover", "dragleave", "drop"].forEach(evt => {
+                window.addEventListener(evt, function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }, true);
 
-            // إرسال البيانات إلى Supabase
-            const { error } = await supabase
-                .from("leads")
-                .insert([{ email }]);
+                document.addEventListener(evt, function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }, true);
+            });
 
-            if (error) {
-                btn.disabled = false;
-                btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> أرسل التقرير`;
-                showStatus("حدث خطأ أثناء حفظ البريد. تأكد من إعدادات الجدول أو الصلاحيات.", "error");
-                console.error("Supabase Error:", error);
-                return;
-            }
+            ["dragenter", "dragover"].forEach(evt => {
+                dropzone.addEventListener(evt, () => dropzone.classList.add("dragover"));
+            });
 
-            btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> تم استلام الطلب`;
-            btn.style.background = "var(--success)";
-            btn.style.color = "#fff";
-            input.disabled = true;
-            showStatus(`تم استلام البريد: ${email}، وسيتم التواصل معك قريبًا.`, "success");
-        });
+            ["dragleave", "drop"].forEach(evt => {
+                dropzone.addEventListener(evt, () => dropzone.classList.remove("dragover"));
+            });
+
+            dropzone.addEventListener("drop", function (e) {
+                const file = e.dataTransfer.files && e.dataTransfer.files[0];
+                if (file) {
+                    handleFileSelection(file);
+                }
+            });
+
+            // Form Submit (Supabase Integration with Extended Payload)
+            document.getElementById("emailForm").addEventListener("submit", async function(e) {
+                e.preventDefault();
+
+                if (!latestAnalysisMetrics) {
+                    showStatus("يرجى تحليل الملف أولاً قبل إرسال الطلب.", "error");
+                    return;
+                }
+
+                const input = document.getElementById("emailInput");
+                const email = input.value.trim();
+                
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showStatus("يرجى إدخال بريد إلكتروني مؤسسي أو شخصي صحيح.", "error");
+                    return;
+                }
+
+                const btn = this.querySelector("button");
+                btn.disabled = true;
+                btn.innerHTML = `<span class="spinner"></span> جاري الإرسال...`;
+
+                // Prepare robust payload capturing both the Lead and their diagnostic metrics
+                const payload = {
+                    email: email,
+                    file_name: latestAnalysisMetrics ? latestAnalysisMetrics.fileName : null,
+                    total_records: latestAnalysisMetrics ? latestAnalysisMetrics.total : null,
+                    delivery_rate: latestAnalysisMetrics ? parseFloat(latestAnalysisMetrics.deliveryRate.toFixed(2)) : null,
+                    return_rate: latestAnalysisMetrics ? parseFloat(latestAnalysisMetrics.returnRate.toFixed(2)) : null,
+                    delay_rate: latestAnalysisMetrics ? parseFloat(latestAnalysisMetrics.delayRate.toFixed(2)) : null,
+                    estimated_loss: latestAnalysisMetrics ? Math.round(latestAnalysisMetrics.estimatedLoss) : null
+                };
+
+                const { error } = await supabaseClient
+                    .from("leads")
+                    .insert([payload]);
+
+                if (error) {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> أرسل التقرير`;
+                    showStatus("حدث خطأ أثناء حفظ البريد. يرجى المحاولة لاحقاً.", "error");
+                    console.error("Supabase Error:", error);
+                    return;
+                }
+
+                btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> تم استلام الطلب بنجاح`;
+                btn.style.background = "var(--success)";
+                btn.style.color = "#fff";
+                input.disabled = true;
+                showStatus(`تم استلام بياناتك بنجاح. سيقوم فريقنا بالتواصل معك قريباً.`, "success");
+            });
+        })();
     </script>
 </body>
 </html>
