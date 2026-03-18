@@ -619,13 +619,24 @@
         });
 
         // Drag & Drop
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(evt => dropzone.addEventListener(evt, e => { e.preventDefault(); e.stopPropagation(); }));
-        ['dragenter', 'dragover'].forEach(evt => dropzone.addEventListener(evt, () => dropzone.classList.add("dragover")));
-        ['dragleave', 'drop'].forEach(evt => dropzone.addEventListener(evt, () => dropzone.classList.remove("dragover")));
+        ["dragenter", "dragover", "dragleave", "drop"].forEach(evt => {
+            document.addEventListener(evt, function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        });
+
+        ["dragenter", "dragover"].forEach(evt => {
+            dropzone.addEventListener(evt, () => dropzone.classList.add("dragover"));
+        });
+
+        ["dragleave", "drop"].forEach(evt => {
+            dropzone.addEventListener(evt, () => dropzone.classList.remove("dragover"));
+        });
         
         dropzone.addEventListener("drop", e => {
             const file = e.dataTransfer.files[0];
-            if(file) {
+            if (file) {
                 uploadInput.files = e.dataTransfer.files; // Sync with input
                 handleFileSelection(file);
             }
